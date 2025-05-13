@@ -12,7 +12,7 @@ public class MatrixGameController : MonoBehaviour
         Instance = this;
         model = new MatrixGameModel();
         model.OnChangedMap += HandleMapUpdated;
-        model.OnCarCollision += HandleCarCollision;
+       // model.OnCarCollision += HandleCarCollision;
     }
 
     private void Update()
@@ -35,15 +35,14 @@ public class MatrixGameController : MonoBehaviour
         GameView.Instance.UpdateMatrix(model.Cars); 
     }
 
-    public void HandleCarCollision(int carIndex)
+    public bool HandleCarCollision(int carIndex)
     {
         if (model.IsEscape(carIndex))
         {
-            //Debug.Log("Out");
-            Destroy(TankSpawner.Instance.GetHolderObj(carIndex));
+            Debug.Log("out");
+            return false;
         }
-        else
-        {
-        }
-    }
+        Debug.Log("cant out");
+        return true;
+    }   
 }

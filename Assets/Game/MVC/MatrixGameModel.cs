@@ -7,7 +7,6 @@ public class MatrixGameModel
     public List<GameObjectModel> Cars { get; private set; } = new List<GameObjectModel>();
 
     public event Action OnChangedMap;
-    public event Action<int> OnCarCollision;
 
     public void LoadCarMatrixFromCSV_Resources(string fileNameWithoutExtension)
     {

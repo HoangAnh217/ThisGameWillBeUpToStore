@@ -41,7 +41,14 @@ public class Tank : MonoBehaviour
     {
         // Xử lý sự kiện khi nhấn chuột vào Tank
         int index = transform.GetSiblingIndex();
-        MatrixGameController.Instance.HandleCarCollision(index);
+        if (!MatrixGameController.Instance.HandleCarCollision(index))
+        {
+            Transform target = PointShootingController.Instance.GetPoint();
+            transform.SetParent(transform.parent.parent.Find("OutOfHolder"));
+            if (target == null)
+                return;
+            HandlerMovementTank.Instance.ControlMovement(transform, target);      
+        }
     }
     public void SetColor(Color a)
     {
