@@ -7,7 +7,8 @@ using static UnityEditor.PlayerSettings;
 public class HandlerMovementTank : MonoBehaviour
 {       
     public static HandlerMovementTank Instance { get; private set; }    
-    private PointShootingController pointShootingController;
+    private EffectSpawner effectSpawner;
+    private MergeSystem mergeSystem;    
 
     [SerializeField] private float limitX, limitMaxY,limitMinY;
     [SerializeField] private List<Transform> wayPoints = new List<Transform>();
@@ -15,16 +16,22 @@ public class HandlerMovementTank : MonoBehaviour
     [Header("stage 1")]
     [SerializeField] private float speedStage1;
 
+    private bool isBusy;
+    public bool GetIsBusy => isBusy;
+
     private void Awake()
     {
         Instance = this;
     }
     private void Start()
     {
-        pointShootingController = PointShootingController.Instance;
+        isBusy = false;
+        effectSpawner = EffectSpawner.Instance;
+        mergeSystem = MergeSystem.Instance; 
     }
     public void ControlMovement(Transform tank, Transform target)
     {
+        isBusy = true;
         StartCoroutine(MoveForwardContinuously(tank, speedStage1,target));
     }
     private IEnumerator MoveForwardContinuously(Transform tank, float speed,Transform target)
@@ -33,6 +40,7 @@ public class HandlerMovementTank : MonoBehaviour
         List<Vector2> paths = new List<Vector2>();
         float angle = transform.eulerAngles.z * Mathf.Deg2Rad;
         Vector2 dir = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+        effectSpawner.Spawn(EffectSpawner.Smoke, tank.position - tank.right, Quaternion.identity);
 
         while (true)
         {
@@ -74,41 +82,58 @@ public class HandlerMovementTank : MonoBehaviour
         }
         paths.Add(target.position- new Vector3(0,1,0));
         paths.Add(target.position);
-        TankMoveStage2(tank, paths,speedStage1);
+        StartTankMove(tank, paths,speedStage1);
     }
-    private void TankMoveStage2(Transform tank, List<Vector2> paths, float speed)
+    public void StartTankMove(Transform tank, List<Vector2> paths, float speed)
     {
         if (paths == null || paths.Count == 0 || speed <= 0f) return;
-
-        Sequence seq = DOTween.Sequence();
-        Vector3 currentPos = tank.position;
-
-        foreach (Vector2 point in paths)
-        {
-            Vector2 target = point;
-            Vector3 from = currentPos;
-            // 1. Tính toán góc tại thời điểm sẽ move
-            seq.AppendCallback(() =>
-            {
-                Vector2 dir = (target - (Vector2)tank.position).normalized;
-                float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-                tank.rotation = Quaternion.Euler(0, 0, angle  );
-            });
-
-            float distance = Vector2.Distance(currentPos, target);
-            float duration = distance / speed;
-
-            seq.Append(tank.DOMove(target, duration).SetEase(Ease.Linear));
-
-            currentPos = target;
-        }
-
-        seq.OnComplete(() =>
-        {
-            Debug.Log("Tank đã đến vị trí cuối!");
-        });
+        StartCoroutine(TankMoveRoutine(tank, paths, speed));
     }
 
+    private IEnumerator TankMoveRoutine(Transform tank, List<Vector2> paths, float speed)
+    {
+        foreach (Vector2 target in paths)
+        {
+            Vector3 targetPos = new Vector3(target.x, target.y, tank.position.z);
 
+            // Xoay hướng tank
+            Vector2 dir = (target - (Vector2)tank.position).normalized;
+            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+            tank.rotation = Quaternion.Euler(0, 0, angle);
+
+            float distance = Vector2.Distance(tank.position, target);
+            float duration = distance / speed;
+            float elapsed = 0f;
+
+            // Bắt coroutine spawn smoke song song
+            Coroutine smokeCoroutine = StartCoroutine(SpawnSmokeWhileMoving(tank));
+
+            while (elapsed < duration)
+            {
+                float step = speed * Time.deltaTime;
+                tank.position = Vector3.MoveTowards(tank.position, targetPos, step);
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            // Đảm bảo đến đúng vị trí cuối
+            tank.position = targetPos;
+            // Ngừng spawn smoke
+            StopCoroutine(smokeCoroutine);
+        }
+        mergeSystem.AddList(tank.GetComponent<Tank>());
+        mergeSystem.MergeTwoTank();
+
+        Debug.Log("Tank đã đến vị trí cuối!");
+        isBusy = false;
+    }
+    private IEnumerator SpawnSmokeWhileMoving(Transform tank)
+    {
+        while (true)
+        {
+            effectSpawner.Spawn(EffectSpawner.Smoke, tank.position, Quaternion.identity);
+            yield return new WaitForSeconds(0.04f);
+        }
+    }
 
 }

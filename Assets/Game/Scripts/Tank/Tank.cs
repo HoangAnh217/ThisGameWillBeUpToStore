@@ -5,6 +5,7 @@ public class Tank : MonoBehaviour
 {
     [Header("Tank Info")]
     [SerializeField] private List<SpriteRenderer> sprs;
+    private Color currentColor;
 
     [Header("Hover Effect")]
     public float hoverScaleFactor = 1.1f; // Phóng to lên 10%
@@ -27,7 +28,10 @@ public class Tank : MonoBehaviour
             transform.localScale = Vector3.Lerp(transform.localScale, originalScale, Time.deltaTime * 10f);
         }
     }
-
+    public Color GetColor()
+    {
+        return currentColor;
+    }
     private void OnMouseEnter()
     {
         isHovered = true;
@@ -44,9 +48,17 @@ public class Tank : MonoBehaviour
         if (!MatrixGameController.Instance.HandleCarCollision(index))
         {
             Transform target = PointShootingController.Instance.GetPoint();
-            transform.SetParent(transform.parent.parent.Find("OutOfHolder"));
             if (target == null)
+            {
                 return;
+            }
+            if (HandlerMovementTank.Instance.GetIsBusy)
+            {
+                Debug.Log("Wating....");
+                return;
+            }
+            PointShootingController.Instance.SetObj();
+            transform.SetParent(transform.parent.parent.Find("OutOfHolder"));
             HandlerMovementTank.Instance.ControlMovement(transform, target);      
         }
     }
@@ -55,6 +67,18 @@ public class Tank : MonoBehaviour
         foreach (var spr in sprs)
         {
             spr.color = a;
+            currentColor = a;
         }
+    }
+    public void DeSpawn()
+    {
+        Debug.Log("despawn in " + (transform.GetSiblingIndex()));    
+        PointShootingController.Instance.RemoveObj(transform.GetSiblingIndex());
+        MergeSystem.Instance.RemoveAt(transform.GetSiblingIndex());
+        GetComponent<TankDespawner>().DeSpawnObj();
+    }
+    public void Upgrade()
+    {
+        Debug.Log("Upgrade tank");
     }
 }

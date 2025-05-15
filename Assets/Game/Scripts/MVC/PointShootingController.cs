@@ -6,7 +6,7 @@ public class PointShootingController : MonoBehaviour
 {   
     public static PointShootingController Instance { get; private set; }
     [SerializeField] private List<Transform> points = new List<Transform>();
-    private List<bool> pointsBool = new List<bool>();
+    [SerializeField] private List<bool> pointsBool = new List<bool>();
 
 
     private void Awake()
@@ -30,7 +30,6 @@ public class PointShootingController : MonoBehaviour
         {
             if (!pointsBool[i])
             {
-                pointsBool[i] = true;
                 return points[i];
             }
         }
@@ -38,12 +37,21 @@ public class PointShootingController : MonoBehaviour
         Debug.Log("full slot");
         return null;
     }
-    public void SetPointBool(int index)
+    public void RemoveObj(int index)
     {
         pointsBool[index] = false;
 
-        Debug.Log(index);
-
+    }
+    public void SetObj()
+    {
+        for (int i = 0; i < points.Count; i++)
+        {
+            if (!pointsBool[i])
+            {
+                pointsBool[i] = true;
+                return;
+            }
+        }
     }
     public int GetIndex(Transform trans)
     {

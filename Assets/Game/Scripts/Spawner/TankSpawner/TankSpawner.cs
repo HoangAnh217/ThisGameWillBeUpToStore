@@ -18,6 +18,11 @@ public class TankSpawner : Spawner
             Destroy(gameObject);
         }
     }
+    public override void Despawm(Transform obj)
+    {
+        base.Despawm(obj);
+        obj.SetParent(holder);
+    }
     public GameObject GetHolderObj(int index)
     {
         return holder.GetChild(index).gameObject;

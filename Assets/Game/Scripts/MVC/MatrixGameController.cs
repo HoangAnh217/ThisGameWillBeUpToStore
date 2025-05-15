@@ -40,6 +40,7 @@ public class MatrixGameController : MonoBehaviour
         if (model.IsEscape(carIndex))
         {
             Debug.Log("out");
+
             return false;
         }
         Debug.Log("cant out");
