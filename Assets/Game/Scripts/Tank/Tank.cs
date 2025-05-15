@@ -73,7 +73,6 @@ public class Tank : MonoBehaviour
     }
     public void DeSpawn()
     {
-        Debug.Log("despawn in " + (transform.GetSiblingIndex()));    
         PointShootingController.Instance.RemoveObj(transform.GetSiblingIndex());
         MergeSystem.Instance.RemoveAt(transform.GetSiblingIndex());
         GetComponent<TankDespawner>().DeSpawnObj();

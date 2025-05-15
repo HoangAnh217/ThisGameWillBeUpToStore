@@ -121,12 +121,19 @@ public class HandlerMovementTank : MonoBehaviour
             // Ngừng spawn smoke
             StopCoroutine(smokeCoroutine);
         }
+        MoveComplete(tank);
+    }
+
+    private void MoveComplete(Transform tank)
+    {
         mergeSystem.AddList(tank.GetComponent<Tank>());
         mergeSystem.MergeTwoTank();
 
         Debug.Log("Tank đã đến vị trí cuối!");
+        tank.GetComponent<TankController>().enabled = true;
         isBusy = false;
     }
+
     private IEnumerator SpawnSmokeWhileMoving(Transform tank)
     {
         while (true)
@@ -135,5 +142,6 @@ public class HandlerMovementTank : MonoBehaviour
             yield return new WaitForSeconds(0.04f);
         }
     }
+    
 
 }
