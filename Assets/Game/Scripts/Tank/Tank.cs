@@ -44,6 +44,11 @@ public class Tank : MonoBehaviour
     private void OnMouseDown()
     {
         // Xử lý sự kiện khi nhấn chuột vào Tank
+        if (HandlerMovementTank.Instance.GetIsBusy)
+        {
+            Debug.Log("Wating....");
+            return;
+        }
         int index = transform.GetSiblingIndex();
         if (!MatrixGameController.Instance.HandleCarCollision(index))
         {
@@ -52,11 +57,7 @@ public class Tank : MonoBehaviour
             {
                 return;
             }
-            if (HandlerMovementTank.Instance.GetIsBusy)
-            {
-                Debug.Log("Wating....");
-                return;
-            }
+           
             PointShootingController.Instance.SetObj();
             transform.SetParent(transform.parent.parent.Find("OutOfHolder"));
             HandlerMovementTank.Instance.ControlMovement(transform, target);      

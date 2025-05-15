@@ -59,7 +59,12 @@ public class MatrixGameModel
 
     public bool IsEscape(int index)
     {
-        if (index < 0 || index >= Cars.Count) return false;
+        if (index < 0 || index >= Cars.Count)
+        {
+            Debug.Log("?????????" + "  "+ index);
+            return false;
+
+        }
 
         GameObjectModel selectedCar = Cars[index];
         Vector2 rayStart = selectedCar._position;
