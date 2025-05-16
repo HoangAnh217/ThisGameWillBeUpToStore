@@ -9,7 +9,7 @@ public class TankController : MonoBehaviour
     [SerializeField] private Transform firePoint;            // Vị trí bắn ra đạn
     [SerializeField] private float fireRate = 0.3f;            // Thời gian giữa mỗi lần bắn
     [SerializeField] private float detectionRange = 10f;     // Phạm vi phát hiện enemy
-    private Color tankColor = Color.red;  // Màu của trụ (để so với enemy)
+    private int colorIndex;  // Màu của trụ (để so với enemy)
 
     private float fireCooldown = 0f;
     [SerializeField] private LayerMask enemyLayer; // Layer của enemy
@@ -18,7 +18,7 @@ public class TankController : MonoBehaviour
     private ProjectileSpawner projectileSpawner;
     private void Start()
     {
-        tankColor = GetComponent<TankController>().tankColor;
+        colorIndex = GetComponent<Tank>().GetColorIndexByColor();
         projectileSpawner = ProjectileSpawner.Instance;
     }
     void Update()
@@ -46,7 +46,7 @@ public class TankController : MonoBehaviour
         foreach (var hit in hits)
         {
             Enemy enemy = hit.GetComponent<Enemy>();
-            if (enemy != null && enemy.Color == tankColor)
+            if (enemy != null && enemy.GetColorIndexByColor() == colorIndex)
             {
                 float dist = Vector3.Distance(transform.position, enemy.transform.position);
                 if (dist < minDist)

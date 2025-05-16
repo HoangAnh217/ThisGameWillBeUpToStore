@@ -2,17 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyDespawn : MonoBehaviour
+public class EnemyDespawn : DeSpawnByDistance
 {
-    // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
-        
+        base.Start();
+        distanceLimit = 50f;
     }
-
-    // Update is called once per frame
-    void Update()
+    public override void DeSpawnObj()
     {
-        
+        base.DeSpawnObj();
+        EnemySpawner.Instance.Despawm(transform);
+    }
+    protected override bool CanDespawn()
+    {
+
+        Debug.Log(distance + "  " + distanceLimit);
+        return base.CanDespawn();
     }
 }

@@ -13,7 +13,7 @@ public class DeSpawnByDistance : DeSpawn
     }
     protected override bool CanDespawn()
     {
-        distance = Vector2.Distance(Camera.main.transform.position, transform.parent.position);
+        distance = Vector2.Distance(Camera.main.transform.position, transform.position);
         if (distance >= distanceLimit) return true;
         return false;
     }

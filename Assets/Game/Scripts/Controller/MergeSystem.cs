@@ -40,7 +40,7 @@ public class MergeSystem : MonoBehaviour
                 {
                     continue;
                 }
-                if ( tankInShootingPoint[j].GetColor() != tank.GetColor())
+                if ( tankInShootingPoint[j].GetColorIndexByColor() != tank.GetColorIndexByColor())
                 {
                     break;
                 }
