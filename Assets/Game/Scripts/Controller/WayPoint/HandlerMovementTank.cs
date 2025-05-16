@@ -41,10 +41,11 @@ public class HandlerMovementTank : MonoBehaviour
         float angle = transform.eulerAngles.z * Mathf.Deg2Rad;
         Vector2 dir = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
         effectSpawner.Spawn(EffectSpawner.Smoke, tank.position - tank.right, Quaternion.identity);
-
         while (true)
         {
+
             pos = tank.position;
+            Debug.Log("Pos: " + pos.y);
             tank.Translate(dir* speed * Time.deltaTime, Space.Self);
             yield return null; // Chờ 1 frame
             if (Mathf.Abs(pos.x) > limitX)
@@ -72,8 +73,8 @@ public class HandlerMovementTank : MonoBehaviour
                 {
                     paths.Add(wayPoints[3].position);
                     paths.Add(wayPoints[0].position);
-                    break;
                 }
+                break;
             }
             else if (pos.y >= limitMaxY)
             {

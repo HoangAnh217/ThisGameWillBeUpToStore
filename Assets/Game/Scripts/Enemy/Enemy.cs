@@ -5,33 +5,35 @@ using UnityEngine.UIElements;
 
 public class Enemy : MonoBehaviour, IDamageable
 {
-    private Color currentColor;
-    public Color Color => currentColor;
+    private int currentColorIndex;
+    public int CurrentColorIndex=> currentColorIndex;
+   // [SerializeField] private List<Sprite> sps;
+    private SpriteRenderer spr;
 
     public float health = 100f;
 
     // components
-    private SpriteRenderer spriteRenderer;
-
     private void Awake()
     {
-        spriteRenderer = transform.Find("Model").GetComponentInChildren<SpriteRenderer>();
+        spr = transform.Find("Model").GetComponentInChildren<SpriteRenderer>();
     }
-    private void Start()
-    {
-        
-    }
+  
     private void Update()
     {
         Movement();
     }
-    public void SetColor(Color color)
+    public void SetColor(int index)
     {
-        currentColor = color;
-        foreach (var spr in GetComponentsInChildren<SpriteRenderer>())
-        {
-            spr.color = color;
-        }
+        Color[] colors =
+                {
+                    Color.red,
+                    Color.blue,
+                    Color.green,
+                    Color.yellow,
+                };
+      
+        currentColorIndex = index;
+        spr.color = colors[index];
     }
     private void Movement()
     {   
@@ -43,22 +45,6 @@ public class Enemy : MonoBehaviour, IDamageable
         if (health <= 0)
         {
             Die();
-        }
-    }
-    public int GetColorIndexByColor()
-    {
-        switch (currentColor)
-        {
-            case var c when c == Color.red:
-                return 0;
-            case var c when c == Color.blue:
-                return 1;
-            case var c when c == Color.green:
-                return 2;
-            case var c when c == Color.yellow:
-                return 3;
-            default:
-                return -1; // Không khớp màu nào
         }
     }
     void Die()

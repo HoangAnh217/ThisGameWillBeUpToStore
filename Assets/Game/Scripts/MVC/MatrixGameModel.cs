@@ -36,15 +36,15 @@ public class MatrixGameModel
                 float angle = float.Parse(parts[2]);
                 int value = int.Parse(parts[3]);
 
-                Color[] colors =
+                /*Color[] colors =
                 {
                     Color.red,
                     Color.blue,
                     Color.green,
                     Color.yellow,
-                };
+                };*/
 
-                var car = new GameObjectModel(new Vector2(x, y), angle, colors[value], new Vector2(0.4f, 0.4f));
+                var car = new GameObjectModel(new Vector2(x, y), angle, value, new Vector2(0.4f, 0.4f));
                 Cars.Add(car);
             }
             catch (Exception e)

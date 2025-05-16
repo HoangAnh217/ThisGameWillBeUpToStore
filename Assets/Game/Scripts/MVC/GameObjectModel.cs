@@ -5,14 +5,14 @@ public class GameObjectModel
     public Vector2 _position;
     public Vector2 _size;
     public float _angle;
-    public Color color;
+    public int colorIndex;
 
-    public GameObjectModel(Vector2 position, float angle,Color color, Vector2 _size)
+    public GameObjectModel(Vector2 position, float angle,int colorIndex, Vector2 _size)
     {
         this._position = position;
         this._size = _size;
         this._angle = angle;
-        this.color = color;
+        this.colorIndex = colorIndex;
     }
 
     public Vector2[] GetVertices()

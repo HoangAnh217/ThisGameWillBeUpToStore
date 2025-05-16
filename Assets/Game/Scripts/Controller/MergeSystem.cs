@@ -40,7 +40,7 @@ public class MergeSystem : MonoBehaviour
                 {
                     continue;
                 }
-                if ( tankInShootingPoint[j].GetColorIndexByColor() != tank.GetColorIndexByColor())
+                if ( tankInShootingPoint[j].GetColorIndex() != tank.GetColorIndex())
                 {
                     break;
                 }
@@ -57,7 +57,7 @@ public class MergeSystem : MonoBehaviour
         b.transform.DOMove(a.transform.position, 0.1f).OnComplete(() =>
         {
             {
-                EffectSpawner.Instance.Spawn("LevelUp", a.transform.position, Quaternion.identity);
+                effectSpawner.Spawn("LevelUp", a.transform.position, Quaternion.identity);
                 a.Upgrade();
                 b.GetComponent<Tank>().DeSpawn();
                 // Xóa tank B sau khi merge

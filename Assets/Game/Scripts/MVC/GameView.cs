@@ -38,7 +38,7 @@ public class GameView : MonoBehaviour
             Vector3 viewPosition = new Vector3(car._position.x, car._position.y,0);
             Transform carTransform = TankSpawner.Instance.Spawn(TankSpawner.TankString, viewPosition, Quaternion.Euler(0, 0, car._angle));
             Tank tank = carTransform.GetComponent<Tank>();
-            tank.SetColor(car.color);
+            tank.SetColor(car.colorIndex);
             tanks.Add(carTransform);
         }
     }

@@ -17,7 +17,6 @@ public class EnemyDespawn : DeSpawnByDistance
     protected override bool CanDespawn()
     {
 
-        Debug.Log(distance + "  " + distanceLimit);
         return base.CanDespawn();
     }
 }

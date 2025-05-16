@@ -5,7 +5,6 @@ using UnityEngine;
 public class TankController : MonoBehaviour
 {
     [SerializeField] private Transform turret;               // Nòng súng (turret) xoay
-    [SerializeField] private GameObject bulletPrefab;        // Prefab đạn
     [SerializeField] private Transform firePoint;            // Vị trí bắn ra đạn
     [SerializeField] private float fireRate = 0.3f;            // Thời gian giữa mỗi lần bắn
     [SerializeField] private float detectionRange = 10f;     // Phạm vi phát hiện enemy
@@ -18,7 +17,7 @@ public class TankController : MonoBehaviour
     private ProjectileSpawner projectileSpawner;
     private void Start()
     {
-        colorIndex = GetComponent<Tank>().GetColorIndexByColor();
+        colorIndex = GetComponent<Tank>().GetColorIndex();
         projectileSpawner = ProjectileSpawner.Instance;
     }
     void Update()
@@ -46,7 +45,7 @@ public class TankController : MonoBehaviour
         foreach (var hit in hits)
         {
             Enemy enemy = hit.GetComponent<Enemy>();
-            if (enemy != null && enemy.GetColorIndexByColor() == colorIndex)
+            if (enemy != null && enemy.CurrentColorIndex == colorIndex)
             {
                 float dist = Vector3.Distance(transform.position, enemy.transform.position);
                 if (dist < minDist)
@@ -64,7 +63,7 @@ public class TankController : MonoBehaviour
     {
         Vector3 direction = targetPosition - turret.position;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        turret.rotation = Quaternion.Euler(0, 0, angle);
+        turret.rotation = Quaternion.Euler(0, 0, angle -90);
     }
 
     void Shoot()

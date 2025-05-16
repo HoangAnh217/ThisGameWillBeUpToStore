@@ -4,8 +4,9 @@ using UnityEngine;
 public class Tank : MonoBehaviour
 {
     [Header("Tank Info")]
-    [SerializeField] private List<SpriteRenderer> sprs;
-    private Color currentColor;
+    [SerializeField] private List<Sprite> sps;
+    [SerializeField] private SpriteRenderer spr;
+    private int  currentColorIndex;
 
     [Header("Hover Effect")]
     public float hoverScaleFactor = 1.1f; // Phóng to lên 10%
@@ -28,21 +29,9 @@ public class Tank : MonoBehaviour
             transform.localScale = Vector3.Lerp(transform.localScale, originalScale, Time.deltaTime * 10f);
         }
     }
-    public int GetColorIndexByColor()
+    public int GetColorIndex()
     {
-        switch (currentColor)
-        {
-            case var c when c == Color.red:
-                return 0;
-            case var c when c == Color.blue:
-                return 1;
-            case var c when c == Color.green:
-                return 2;
-            case var c when c == Color.yellow:
-                return 3;
-            default:
-                return -1; // Không khớp màu nào
-        }
+        return currentColorIndex;   
     }
 
 
@@ -77,13 +66,17 @@ public class Tank : MonoBehaviour
             HandlerMovementTank.Instance.ControlMovement(transform, target);      
         }
     }
-    public void SetColor(Color a)
+    public void SetColor(int index)
     {
-        foreach (var spr in sprs)
-        {
-            spr.color = a;
-            currentColor = a;
-        }
+        Color[] colors =
+                {
+                    Color.red,
+                    Color.blue,
+                    Color.green,
+                    Color.yellow,
+                };
+        spr.sprite = sps[index];
+        currentColorIndex = index;
     }
     public void DeSpawn()
     {

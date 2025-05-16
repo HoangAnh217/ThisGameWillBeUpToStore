@@ -12,13 +12,6 @@ public class EnemySpawner : Spawner
     public float spawnInterval = 0.2f;
     private float time = 0f;
     // controller spawn
-    private Color[] colors =
-               {
-                    Color.red,
-                    Color.blue,
-                    Color.green,
-                    Color.yellow,
-                };
     protected override void Awake()
     {
         base.Awake(); // Gọi Awake từ class cha nếu cần
@@ -47,11 +40,11 @@ public class EnemySpawner : Spawner
         Vector3 spawnPos = new Vector3(xPos, yPos, 0f);
 
         int randomColor = Random.Range(0,4);
-        SpawnEnemy(Slime, spawnPos, Quaternion.identity, colors[randomColor]);
+        SpawnEnemy(Slime, spawnPos, Quaternion.identity, randomColor);
     }
-    public void SpawnEnemy(string enemyType, Vector3 spawnPos, Quaternion rotation,Color color)
+    public void SpawnEnemy(string enemyType, Vector3 spawnPos, Quaternion rotation,int colorIndex)
     {
         Transform enemy = base.Spawn(enemyType, spawnPos, rotation);
-        enemy.GetComponent<Enemy>().SetColor(color);
+        enemy.GetComponent<Enemy>().SetColor(colorIndex);
     }
 }
