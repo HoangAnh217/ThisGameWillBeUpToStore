@@ -4,10 +4,14 @@ public class Projectile : MonoBehaviour
 {
     [SerializeField] private float speed = 10f;
     [SerializeField] private float dame = 50;
-
+    private ProjectileDespawner projectileDespawner;
+    private void Start()
+    {
+        projectileDespawner = GetComponent<ProjectileDespawner>();
+    }
     void Update()
     {
-        transform.Translate(Vector2.up * speed * Time.deltaTime);
+        transform.Translate(Vector2.right * speed * Time.deltaTime);
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -18,6 +22,7 @@ public class Projectile : MonoBehaviour
             {
                 enemy.TakeDamage(dame);
                // GetComponent<Proj>
+               projectileDespawner.DeSpawnObj();
             }
         }
         /*else if (collision.CompareTag("Wall"))

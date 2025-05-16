@@ -4,21 +4,29 @@ using UnityEngine;
 
 public class TankController : MonoBehaviour
 {
+    [SerializeField] private Transform model;
+    [SerializeField] private Transform modelTank;
     [SerializeField] private Transform turret;               // Nòng súng (turret) xoay
     [SerializeField] private Transform firePoint;            // Vị trí bắn ra đạn
     [SerializeField] private float fireRate = 0.3f;            // Thời gian giữa mỗi lần bắn
     [SerializeField] private float detectionRange = 10f;     // Phạm vi phát hiện enemy
     private int colorIndex;  // Màu của trụ (để so với enemy)
-
     private float fireCooldown = 0f;
     [SerializeField] private LayerMask enemyLayer; // Layer của enemy
 
     //
+    [Header("Tank Info")]
+    [SerializeField] private List<Sprite> sps;
+    [SerializeField] private SpriteRenderer spr;
+
     private ProjectileSpawner projectileSpawner;
     private void Start()
     {
         colorIndex = GetComponent<Tank>().GetColorIndex();
         projectileSpawner = ProjectileSpawner.Instance;
+        model.gameObject.SetActive(false);
+        modelTank.gameObject.SetActive(true);
+        SetColor(colorIndex);
     }
     void Update()
     {
@@ -63,12 +71,16 @@ public class TankController : MonoBehaviour
     {
         Vector3 direction = targetPosition - turret.position;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        turret.rotation = Quaternion.Euler(0, 0, angle -90);
+        turret.rotation = Quaternion.Euler(0, 0, angle );
     }
 
     void Shoot()
     {
-        projectileSpawner.Spawn(ProjectileSpawner.Bullet, firePoint.position, turret.rotation);
+        projectileSpawner.Spawn(ProjectileSpawner.Bullet, firePoint.position, turret.rotation );
         // Đạn tự xử lý bay và va chạm
+    }
+    private void SetColor(int index)
+    {
+        spr.sprite = sps[index];
     }
 }
