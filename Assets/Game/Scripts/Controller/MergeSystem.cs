@@ -6,6 +6,7 @@ using UnityEngine;
 public class MergeSystem : MonoBehaviour
 {   
     public static MergeSystem Instance { get; private set; }
+    private CanvasInGameController canvasInGameController;
 
     [SerializeField] private List<Tank> tankInShootingPoint = new List<Tank>(4);
     private EffectSpawner effectSpawner;
@@ -16,7 +17,8 @@ public class MergeSystem : MonoBehaviour
     }
     private void Start()
     {
-        effectSpawner = EffectSpawner.Instance; 
+        effectSpawner = EffectSpawner.Instance;
+        canvasInGameController = CanvasInGameController.Instance;
     }
     public void AddList(Tank tank)
     {
@@ -60,6 +62,7 @@ public class MergeSystem : MonoBehaviour
                 effectSpawner.Spawn("LevelUp", a.transform.position, Quaternion.identity);
                 a.Upgrade();
                 b.GetComponent<Tank>().DeSpawn();
+                canvasInGameController.amountBulletShowUI.OutOfBullet(index);
                 // Xóa tank B sau khi merge
             }
         });
@@ -68,5 +71,8 @@ public class MergeSystem : MonoBehaviour
     {
         tankInShootingPoint[index] = null;
     }
-    
+    public int IndexTank(Tank tank)
+    {
+        return tankInShootingPoint.IndexOf(tank);
+    }
 }

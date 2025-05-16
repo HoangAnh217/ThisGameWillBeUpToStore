@@ -8,13 +8,16 @@ public class HandlerMovementTank : MonoBehaviour
 {       
     public static HandlerMovementTank Instance { get; private set; }    
     private EffectSpawner effectSpawner;
-    private MergeSystem mergeSystem;    
+    private MergeSystem mergeSystem;   
+    private CanvasInGameController canvasInGameController;
+    private PointShootingController pointShootingController;
 
     [SerializeField] private float limitX, limitMaxY,limitMinY;
     [SerializeField] private List<Transform> wayPoints = new List<Transform>();
 
     [Header("stage 1")]
     [SerializeField] private float speedStage1;
+    private Transform currentTarget;
 
     private bool isBusy;
     public bool GetIsBusy => isBusy;
@@ -27,7 +30,9 @@ public class HandlerMovementTank : MonoBehaviour
     {
         isBusy = false;
         effectSpawner = EffectSpawner.Instance;
-        mergeSystem = MergeSystem.Instance; 
+        mergeSystem = MergeSystem.Instance;
+        canvasInGameController = CanvasInGameController.Instance;
+        pointShootingController = PointShootingController.Instance;
     }
     public void ControlMovement(Transform tank, Transform target)
     {
@@ -39,6 +44,7 @@ public class HandlerMovementTank : MonoBehaviour
         Vector3 pos ;
         List<Vector2> paths = new List<Vector2>();
         float angle = transform.eulerAngles.z * Mathf.Deg2Rad;
+        currentTarget = target;
         Vector2 dir = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
         effectSpawner.Spawn(EffectSpawner.Smoke, tank.position - tank.right, Quaternion.identity);
         while (true)
@@ -129,10 +135,12 @@ public class HandlerMovementTank : MonoBehaviour
     {
         mergeSystem.AddList(tank.GetComponent<Tank>());
         mergeSystem.MergeTwoTank();
-
-        Debug.Log("Tank đã đến vị trí cuối!");
+        Debug.Log(canvasInGameController);
+        canvasInGameController.amountBulletShowUI.ActiveTmp(pointShootingController.GetIndex(currentTarget));
         tank.GetComponent<TankController>().enabled = true;
         isBusy = false;
+        Debug.Log("Tank đã đến vị trí cuối!");
+        currentTarget = null;
     }
 
     private IEnumerator SpawnSmokeWhileMoving(Transform tank)
