@@ -46,5 +46,13 @@ public class EnemySpawner : Spawner
     {
         Transform enemy = base.Spawn(enemyType, spawnPos, rotation);
         enemy.GetComponent<Enemy>().SetColor(colorIndex);
+        /*if (colorIndex == 0)
+            enemy.gameObject.layer = LayerMask.NameToLayer("Red");
+        else if (colorIndex == 1)
+            enemy.gameObject.layer = LayerMask.NameToLayer("Blue");
+        else if (colorIndex == 2)
+            enemy.gameObject.layer = LayerMask.NameToLayer("Green");
+        else if (colorIndex == 3)
+            enemy.gameObject.layer = LayerMask.NameToLayer("Yellow");*/
     }
 }

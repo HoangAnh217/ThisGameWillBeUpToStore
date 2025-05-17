@@ -83,6 +83,7 @@ public class Tank : MonoBehaviour
         int indexCurrentTank = mergeSystem.IndexTank(GetComponent<Tank>());
         PointShootingController.Instance.RemoveObj(indexCurrentTank);
         MergeSystem.Instance.RemoveAt(indexCurrentTank);
+        //MergeSystem.Instance.MergeTwoTank()
         GetComponent<TankDespawner>().DeSpawnObj();
     }
     public void Upgrade()

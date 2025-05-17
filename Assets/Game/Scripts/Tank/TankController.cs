@@ -88,7 +88,7 @@ public class TankController : MonoBehaviour
 
     void Shoot()
     {
-        projectileSpawner.Spawn(ProjectileSpawner.Bullet, firePoint.position, turret.rotation );
+        projectileSpawner.Spawn(projectileSpawner.listColor[colorIndex], firePoint.position, turret.rotation );
         // Đạn tự xử lý bay và va chạm
         amountBullet--;
         canvasInGameController.amountBulletShowUI.UpdateTmp(mergeSystem.IndexTank(tank),amountBullet);

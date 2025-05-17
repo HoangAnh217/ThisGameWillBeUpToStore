@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
@@ -5,6 +6,10 @@ public class Projectile : MonoBehaviour
     [SerializeField] private float speed = 10f;
     [SerializeField] private float dame = 50;
     private ProjectileDespawner projectileDespawner;
+
+    [SerializeField] private int currentColorIndex;
+   /* [SerializeField] private List<Sprite> sps;
+    [SerializeField] private SpriteRenderer spr;*/
     private void Start()
     {
         projectileDespawner = GetComponent<ProjectileDespawner>();
@@ -18,7 +23,7 @@ public class Projectile : MonoBehaviour
         if (collision.CompareTag("Enemy"))
         {
             Enemy enemy = collision.GetComponent<Enemy>();
-            if (enemy != null)
+            if (enemy != null && enemy.CurrentColorIndex == currentColorIndex)
             {
                 enemy.TakeDamage(dame);
                 // GetComponent<Proj>
@@ -29,5 +34,11 @@ public class Projectile : MonoBehaviour
         {
             Destroy(gameObject); // Destroy the projectile when it hits a wall
         }*/
+    }
+    public void SetColor(int index)
+    {
+
+        //spr.sprite = sps[index];
+        currentColorIndex = index;
     }
 }
