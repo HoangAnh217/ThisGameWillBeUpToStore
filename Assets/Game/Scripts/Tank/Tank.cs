@@ -12,9 +12,10 @@ public class Tank : MonoBehaviour
     public float hoverScaleFactor = 1.1f; // Phóng to lên 10%
     private Vector3 originalScale;
     private bool isHovered = false;
-
+    private MergeSystem mergeSystem;
     private void Start()
-    {
+    {   
+        mergeSystem = MergeSystem.Instance;
         originalScale = transform.localScale;
     }
 
@@ -52,36 +53,36 @@ public class Tank : MonoBehaviour
             Debug.Log("Wating....");
             return;
         }
+        if (PointShootingController.Instance.IsFullSlot())
+        {
+            return;
+        }
         int index = transform.GetSiblingIndex();
         if (!MatrixGameController.Instance.HandleCarCollision(index))
         {
             Transform target = PointShootingController.Instance.GetPoint();
-            if (target == null)
-            {
-                return;
-            }
-           
-            PointShootingController.Instance.SetObj();
+            //PointShootingController.Instance.SetObj();
             transform.SetParent(transform.parent.parent.Find("OutOfHolder"));
             HandlerMovementTank.Instance.ControlMovement(transform, target);      
         }
     }
     public void SetColor(int index)
     {
-        Color[] colors =
+       /* Color[] colors =
                 {
                     Color.red,
                     Color.blue,
                     Color.green,
                     Color.yellow,
-                };
+                };*/
         spr.sprite = sps[index];
         currentColorIndex = index;
     }
     public void DeSpawn()
-    {
-        PointShootingController.Instance.RemoveObj(transform.GetSiblingIndex());
-        MergeSystem.Instance.RemoveAt(transform.GetSiblingIndex());
+    {   
+        int indexCurrentTank = mergeSystem.IndexTank(GetComponent<Tank>());
+        PointShootingController.Instance.RemoveObj(indexCurrentTank);
+        MergeSystem.Instance.RemoveAt(indexCurrentTank);
         GetComponent<TankDespawner>().DeSpawnObj();
     }
     public void Upgrade()

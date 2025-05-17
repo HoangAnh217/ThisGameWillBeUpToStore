@@ -6,7 +6,7 @@ public class PointShootingController : MonoBehaviour
 {   
     public static PointShootingController Instance { get; private set; }
     [SerializeField] private List<Transform> points = new List<Transform>();
-    [SerializeField] private List<bool> pointsBool = new List<bool>();
+    [SerializeField] private List<bool> HaveSlot = new List<bool>();
 
 
     private void Awake()
@@ -22,14 +22,15 @@ public class PointShootingController : MonoBehaviour
     }
     private void Start()
     {
-        pointsBool = new List<bool>(new bool[points.Count]);
+        HaveSlot = new List<bool>(new bool[points.Count]);
     }
     public Transform GetPoint()
     {
         for (int i = 0; i < points.Count; i++)
         {
-            if (!pointsBool[i])
+            if (!HaveSlot[i])
             {
+                HaveSlot[i] = true;
                 return points[i];
             }
         }
@@ -39,19 +40,30 @@ public class PointShootingController : MonoBehaviour
     }
     public void RemoveObj(int index)
     {
-        pointsBool[index] = false;
+        HaveSlot[index] = false;
 
     }
     public void SetObj()
     {
         for (int i = 0; i < points.Count; i++)
         {
-            if (!pointsBool[i])
+            if (!HaveSlot[i])
             {
-                pointsBool[i] = true;
+                HaveSlot[i] = true;
                 return;
             }
         }
+    }
+    public bool IsFullSlot()
+    {
+        for (int i = 0; i < HaveSlot.Count; i++)
+        {
+            if (!HaveSlot[i])
+            {
+                return false;
+            }
+        }
+        return true;
     }
     public int GetIndex(Transform trans)
     {

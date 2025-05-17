@@ -36,6 +36,10 @@ public class MergeSystem : MonoBehaviour
         for (int i = 0; i < tankInShootingPoint.Count; i++)
         {   
             Tank tank = tankInShootingPoint[i];
+            if (tank ==null)
+            {
+                continue;
+            }
             for (int j = i+1;  j < tankInShootingPoint.Count;  j++)
             {
                 if (tankInShootingPoint[j] ==null )
@@ -61,8 +65,8 @@ public class MergeSystem : MonoBehaviour
             {
                 effectSpawner.Spawn("LevelUp", a.transform.position, Quaternion.identity);
                 a.Upgrade();
-                b.GetComponent<Tank>().DeSpawn();
                 canvasInGameController.amountBulletShowUI.OutOfBullet(index);
+                b.GetComponent<Tank>().DeSpawn();
                 // Xóa tank B sau khi merge
             }
         });

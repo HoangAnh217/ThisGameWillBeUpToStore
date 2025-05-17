@@ -5099,7 +5099,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1283954440}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
   m_Name: 
@@ -5623,7 +5623,7 @@ MonoBehaviour:
   - {fileID: 1732384711}
   - {fileID: 788172904}
   - {fileID: 1527171250}
-  pointsBool: 
+  HaveSlot: 
 --- !u!1 &1469384345
 GameObject:
   m_ObjectHideFlags: 0

@@ -21,8 +21,8 @@ public class Projectile : MonoBehaviour
             if (enemy != null)
             {
                 enemy.TakeDamage(dame);
-               // GetComponent<Proj>
-               projectileDespawner.DeSpawnObj();
+                // GetComponent<Proj>
+                projectileDespawner.DeSpawnObj();
             }
         }
         /*else if (collision.CompareTag("Wall"))
