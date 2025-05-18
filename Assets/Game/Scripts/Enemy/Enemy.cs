@@ -9,6 +9,7 @@ public class Enemy : TriBehaviour, IDamageable
     public int CurrentColorIndex=> currentColorIndex;
    // [SerializeField] private List<Sprite> sps;
     private SpriteRenderer spr;
+    private EnemyDespawn enemyDespawn;
 
     private float maxHealth = 100f;
     public float health = 100f;
@@ -19,6 +20,10 @@ public class Enemy : TriBehaviour, IDamageable
     protected override void Awake()
     {
         spr = transform.Find("Model").GetComponentInChildren<SpriteRenderer>();
+    }
+    protected override void Start()
+    {
+        enemyDespawn = GetComponent<EnemyDespawn>();
     }
     public override void OnEnable()
     {
@@ -68,6 +73,7 @@ public class Enemy : TriBehaviour, IDamageable
     }*/
     void Die()
     {
-        GetComponent<EnemyDespawn>().DeSpawnObj();
+        enemyDespawn.DeSpawnObj();
+       // EnemySpawner.Instance.EnemyDie();
     }
 }

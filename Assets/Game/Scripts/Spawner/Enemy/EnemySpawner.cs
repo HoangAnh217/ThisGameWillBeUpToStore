@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class EnemySpawner : Spawner
 {
@@ -6,53 +8,111 @@ public class EnemySpawner : Spawner
 
     public static string Slime = "Slime";
 
-    public float xLimit = 10f; // Giới hạn spawn theo trục x
-    public float yMaxLimit = 5f;  // Giới hạn spawn theo trục y
-    public float yMinLimit = 5f;  // Giới hạn spawn theo trục y
-    public float spawnInterval = 0.2f;
-    private float time = 0f;
-    // controller spawn
+    public LevelData levelData;
+    private int currentWaveIndex = 0;
+    private float timer = 0f;
+    // private bool isSpawningWave = false;
+
+    private int SumOfEnemyInLevel;
+    // spawn infor
+    [SerializeField] private float xLimit = 10f;
+    [SerializeField] private float yMaxLimit = 5f;
+    [SerializeField] private float yMinLimit = 5f;
+
+    int _groupsRemaining;
+
     protected override void Awake()
     {
         base.Awake(); // Gọi Awake từ class cha nếu cần
         Instance = this;
     }
-    private void Update()
+    protected override void Start()
     {
-        time += Time.deltaTime;
-        if (time >= spawnInterval)
+        base.Start();
+        for (int i = 0; i < levelData.Waves.Count; i++)
         {
-            time = 0f;
-            SpawnEnemySimple(Slime);
+            for (int j = 0; j < levelData.Waves[i].EnemiesToSpawn.Count; j ++)
+            {
+                SumOfEnemyInLevel += levelData.Waves[i].EnemiesToSpawn[j].AmountOfEnemy ;
+            }
         }
     }
-    public void SpawnEnemySimple(string enemyType)
+    void Update()
     {
-        /*GameObject enemyPrefab = Resources.Load<GameObject>(enemyType);
-        if (enemyPrefab == null)
+       
+        timer += Time.deltaTime;
+        if (currentWaveIndex >= levelData.Waves.Count)
         {
-            Debug.LogError($"Enemy prefab '{enemyType}' not found in Resources folder.");
             return;
-        }*/
+        }
 
+        if (timer > levelData.Waves[currentWaveIndex].StartTime)
+        {
+            StartCoroutine(SpawnWave(levelData.Waves[currentWaveIndex], currentWaveIndex));
+            currentWaveIndex++;
+        }
+        /*   if (spawnCoroutine != null)
+           {
+               StopCoroutine(spawnCoroutine);
+               spawnCoroutine = null;
+           }
+
+           _mileStoneProgressBar.UpdateCompleteMileStone(currentWaveIndex);
+           spawnCoroutine = StartCoroutine(SpawnWave(wave, currentWaveIndex));*/
+    }
+
+    IEnumerator SpawnWave(WaveData wave, int waveIndex)
+    {
+        _groupsRemaining = wave.EnemiesToSpawn.Count;
+
+        foreach (var spawnData in wave.EnemiesToSpawn)
+        {
+            StartCoroutine(SpawnEnemyGroup(spawnData));
+        }
+
+        yield return new WaitUntil(() => _groupsRemaining == 0);
+
+       /* if (waveIndex == levelData.Waves.Count - 1)
+        {
+            *//*_isSpawnAllEnemies = true;
+            yield return new WaitUntil(() => _groupsRemaining == 0);
+            Debug.Log("completed level.");*//*
+            StartCoroutine(CheckComplete());
+        }*/
+    }
+   /* private IEnumerator CheckComplete()
+    {
+        //WhitePoint\
+        yield return new WaitUntil(() => SumOfEnemyInLevel == 0);
+        Debug.Log("completed level.");
+    }*/
+    private IEnumerator SpawnEnemyGroup(EnemySpawnData spawnData)
+    {
+        for (int i = 0; i < spawnData.AmountOfEnemy; i++)
+        {
+            SpawnEnemy(spawnData.NameEnemyPrefabs);
+            yield return new WaitForSeconds(spawnData.SpawnInterval);
+        }
+
+        // Khi group này xong, giảm counter
+        _groupsRemaining--;
+    }
+    private void SpawnEnemy(string enemyName)
+    {
         float xPos = Random.Range(-xLimit, xLimit);
         float yPos = Random.Range(yMinLimit, yMaxLimit);
         Vector3 spawnPos = new Vector3(xPos, yPos, 0f);
-
-        int randomColor = Random.Range(0,4);
-        SpawnEnemy(Slime, spawnPos, Quaternion.identity, randomColor);
+        Transform enemy = Spawn(enemyName, spawnPos, Quaternion.identity);
+        int randomColor = Random.Range(0, 4);
+        enemy.GetComponent<Enemy>().SetColor(randomColor);
     }
-    public void SpawnEnemy(string enemyType, Vector3 spawnPos, Quaternion rotation,int colorIndex)
-    {
-        Transform enemy = base.Spawn(enemyType, spawnPos, rotation);
-        enemy.GetComponent<Enemy>().SetColor(colorIndex);
-        /*if (colorIndex == 0)
-            enemy.gameObject.layer = LayerMask.NameToLayer("Red");
-        else if (colorIndex == 1)
-            enemy.gameObject.layer = LayerMask.NameToLayer("Blue");
-        else if (colorIndex == 2)
-            enemy.gameObject.layer = LayerMask.NameToLayer("Green");
-        else if (colorIndex == 3)
-            enemy.gameObject.layer = LayerMask.NameToLayer("Yellow");*/
+    public override void Despawm(Transform obj)
+    {   
+        SumOfEnemyInLevel--;
+        if (SumOfEnemyInLevel <=0)
+        {
+            Debug.Log("level compelete");
+        }
+        base.Despawm(obj);
     }
 }
