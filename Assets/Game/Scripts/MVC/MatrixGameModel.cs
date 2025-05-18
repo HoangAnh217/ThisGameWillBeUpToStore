@@ -61,7 +61,6 @@ public class MatrixGameModel
     {
         if (index < 0 || index >= Cars.Count)
         {
-            Debug.Log("?????????" + "  "+ index);
             return false;
 
         }

@@ -62,6 +62,8 @@ public class Tank : MonoBehaviour
         {
             Transform target = PointShootingController.Instance.GetPoint();
             //PointShootingController.Instance.SetObj();
+            mergeSystem.AddList(this);
+
             transform.SetParent(transform.parent.parent.Find("OutOfHolder"));
             HandlerMovementTank.Instance.ControlMovement(transform, target);      
         }

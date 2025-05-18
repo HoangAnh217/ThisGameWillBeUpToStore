@@ -1,23 +1,31 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
-
-public class Enemy : MonoBehaviour, IDamageable
+using DG.Tweening;
+using UnityEngine.UI;
+public class Enemy : TriBehaviour, IDamageable
 {
     private int currentColorIndex;
     public int CurrentColorIndex=> currentColorIndex;
    // [SerializeField] private List<Sprite> sps;
     private SpriteRenderer spr;
 
+    private float maxHealth = 100f;
     public float health = 100f;
-
+    [SerializeField] private Image healthSlider;
+    [SerializeField] private Image damageEffectSlider;
+    [SerializeField] private Canvas canvasEnemy;
     // components
-    private void Awake()
+    protected override void Awake()
     {
         spr = transform.Find("Model").GetComponentInChildren<SpriteRenderer>();
     }
-  
+    public override void OnEnable()
+    {
+        base.OnEnable();
+        canvasEnemy.gameObject.SetActive(false);
+        health =maxHealth;
+    }
     private void Update()
     {
         Movement();
@@ -41,12 +49,23 @@ public class Enemy : MonoBehaviour, IDamageable
     }
     public void TakeDamage(float damage)
     {
+        //DisplayDamageText(damage);
+        canvasEnemy.gameObject.SetActive(true);
+        damageEffectSlider.fillAmount = health/ maxHealth;
         health -= damage;
+        healthSlider.fillAmount = health /maxHealth;
+        damageEffectSlider.DOFillAmount(health / maxHealth,0.5f).SetEase(Ease.Linear);
         if (health <= 0)
         {
             Die();
         }
     }
+    /*private void DisplayDamageText(int damage)
+    {
+
+        Transform obj = EffectSpawner.Instance.Spawn(EffectSpawner.TextFloat, transform.position, Quaternion.identity);
+        obj.GetComponent<TextMeshPro>().text = damage.ToString();
+    }*/
     void Die()
     {
         GetComponent<EnemyDespawn>().DeSpawnObj();
