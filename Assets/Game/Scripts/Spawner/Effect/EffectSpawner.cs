@@ -2,13 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class EffectSpawner : Spawner
 {
     public static  EffectSpawner Instance { get; private set; }
-    public static string EffectExplosionName = "FireExplosionParticlePrefab";
+    public static string TextFloat = "FloatingText";
     public static string LevelUp = "LevelUp";
     public static string Smoke = "Smoke";
 
@@ -24,39 +25,25 @@ public class EffectSpawner : Spawner
         base.Awake();
         Instance = this;
     }
-    /*public Tween SpawnAndMoveCoin(Vector3 vec)
+    public void SpawnEffectText(string effectName, Vector3 position, Quaternion quaternion, bool isCrit,float dame)
     {
-        GameObject coin = Instantiate(coinPrefab, parentCoin.transform);
-        RectTransform coinRect = coin.GetComponent<RectTransform>();
-        coinRect.anchoredPosition = UtilityFuntion.ConvertWordSpaceToUI(transform.position, canvas);
-
-
-        // Bay từ vị trí bắt đầu đến vị trí UI mục tiêu
-        return coinRect.DOAnchorPos(coinPrefab.GetComponent<RectTransform>().anchoredPosition, 1f).SetEase(Ease.InOutQuad).OnComplete(() =>
+        Transform floatingText = base.Spawn(effectName, position, quaternion);
+        TextMeshPro textMeshPro = floatingText.GetComponent<TextMeshPro>();
+        if (textMeshPro != null)
         {
-            Despawm(coin.transform);
-        });
-    }*/
-    /*public void DisplayDamageText(int damage, Canvas canvasParent)
-    {
-        Transform damageTextInstance = Spawn(prefabs[0], Vector3.zero, Quaternion.identity);
-        damageTextInstance.SetParent(canvasParent.transform);
-        damageTextInstance.SetParent(canvasParent.transform, false);
-        RectTransform rectTransform = damageTextInstance.GetComponent<RectTransform>();
-        rectTransform.localPosition = new Vector3(30, 130, 0);
-        rectTransform.localRotation = Quaternion.Euler(30, 0, 0);
-        damageTextInstance.gameObject.SetActive(true);
-        TextMeshPro damageText = damageTextInstance.GetComponent<TextMeshPro>();
-        damageTextInstance.GetComponent<TextMeshPro>().text = damage.ToString(); // Hiển thị số lượng sát thương
-        rectTransform.DOAnchorPosY(rectTransform.anchoredPosition.y + 0.7f, 0.5f)
-            .SetEase(Ease.OutQuad); // Hiệu ứng di chuyển mượt mà
+            textMeshPro.text = dame.ToString("F0"); // Làm tròn số nếu muốn
 
-        // Làm mờ Text sau khi di chuyển xong
-        damageText.DOFade(0, 0.5f).OnKill(() => Despawm(damageTextInstance.transform));
-    }*/
-   /* public override void Despawm(Transform obj)
-    {
-        obj.SetParent(holder);
-        base.Despawm(obj);
-    }*/
+            // Tuỳ chỉnh màu và kích cỡ nếu là crit
+            if (isCrit)
+            {
+                textMeshPro.color = Color.red;
+                textMeshPro.fontSize *= 1.5f;
+            }
+            else
+            {
+                textMeshPro.color = Color.yellow;
+            }
+
+        }
+    }
 }

@@ -92,7 +92,7 @@ public class TankController : MonoBehaviour
         // Đạn tự xử lý bay và va chạm
         amountBullet--;
         canvasInGameController.amountBulletShowUI.UpdateTmp(mergeSystem.IndexTank(tank),amountBullet);
-       /* if (amountBullet <= 0)
+        if (amountBullet <= 0)
         {
 
             Debug.Log("out of bullet");
@@ -100,7 +100,7 @@ public class TankController : MonoBehaviour
             canvasInGameController.amountBulletShowUI.OutOfBullet(mergeSystem.IndexTank(tank));
 
             tank.DeSpawn();
-        }*/
+        }
     }
     private void SetColor(int index)
     {

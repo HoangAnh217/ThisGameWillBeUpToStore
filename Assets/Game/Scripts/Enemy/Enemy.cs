@@ -4,26 +4,35 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
 public class Enemy : TriBehaviour, IDamageable
-{
+{   
+
+    // component
+    private Animator animator;
+   // [SerializeField] private List<Sprite> sps;
     private int currentColorIndex;
     public int CurrentColorIndex=> currentColorIndex;
-   // [SerializeField] private List<Sprite> sps;
     private SpriteRenderer spr;
     private EnemyDespawn enemyDespawn;
+    private EffectSpawner effectSpawner;
 
     private float maxHealth = 100f;
     public float health = 100f;
     [SerializeField] private Image healthSlider;
     [SerializeField] private Image damageEffectSlider;
     [SerializeField] private Canvas canvasEnemy;
-    // components
+    // attack 
+    [SerializeField] private float minY;
+    private bool isAttacking = false;
+
     protected override void Awake()
     {
         spr = transform.Find("Model").GetComponentInChildren<SpriteRenderer>();
+        effectSpawner = EffectSpawner.Instance;
     }
     protected override void Start()
     {
         enemyDespawn = GetComponent<EnemyDespawn>();
+        animator = transform.Find("Model").GetComponentInChildren<Animator>();
     }
     public override void OnEnable()
     {
@@ -33,8 +42,17 @@ public class Enemy : TriBehaviour, IDamageable
     }
     private void Update()
     {
-        Movement();
+        if (!isAttacking)
+        {
+            Movement();
+            CheckAttackTrigger();
+        }
+        else
+        {
+            Attack();
+        }
     }
+
     public void SetColor(int index)
     {
         Color[] colors =
@@ -48,6 +66,24 @@ public class Enemy : TriBehaviour, IDamageable
         currentColorIndex = index;
         spr.color = colors[index];
     }
+    private void CheckAttackTrigger()
+    {
+        if (transform.position.y <= minY)
+        {
+            isAttacking = true;
+            Debug.Log("Enemy is now attacking!");
+        }
+    }
+    private void Attack()
+    {
+        // animator.SetBool("Attack", true);
+        Debug.Log("Enemy attacks!");
+        Player.Instance.TakeDame(30f);
+
+        Die();
+    }
+
+
     private void Movement()
     {   
         transform.Translate(Vector3.down * Time.deltaTime * 0.8f);
@@ -55,6 +91,7 @@ public class Enemy : TriBehaviour, IDamageable
     public void TakeDamage(float damage)
     {
         //DisplayDamageText(damage);
+        effectSpawner.SpawnEffectText(EffectSpawner.TextFloat, transform.position, Quaternion.identity, false, damage);
         canvasEnemy.gameObject.SetActive(true);
         damageEffectSlider.fillAmount = health/ maxHealth;
         health -= damage;

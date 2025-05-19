@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EffectDespawn : DeSpawnByTime
 {
+    [SerializeField] private bool isDespawnParent = false;
     protected override void Start()
     {
         base.Start();
@@ -12,6 +13,11 @@ public class EffectDespawn : DeSpawnByTime
     public override void DeSpawnObj()
     {
         base.DeSpawnObj();
-        EffectSpawner.Instance.Despawm(transform);
+        if (isDespawnParent == false)
+        {
+            EffectSpawner.Instance.Despawm(transform);
+        }
+        else 
+            EffectSpawner.Instance.Despawm(transform.parent);
     }
 }

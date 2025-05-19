@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CanvasInGameController : MonoBehaviour
 {
     private static CanvasInGameController instance;
     public static CanvasInGameController Instance => instance;
 
-    public AmountBulletShowUI amountBulletShowUI;
+    [HideInInspector] public AmountBulletShowUI amountBulletShowUI;
+    public Image health ;
 
     private void Awake()
     {
@@ -16,5 +18,9 @@ public class CanvasInGameController : MonoBehaviour
     private void Start()
     {
         amountBulletShowUI = GetComponentInChildren<AmountBulletShowUI>();
+    }
+    public void UpdateHealthUI(float healthValue)
+    {
+        health.fillAmount = healthValue;
     }
 }
