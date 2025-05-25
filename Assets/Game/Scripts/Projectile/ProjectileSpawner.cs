@@ -11,8 +11,10 @@ public class ProjectileSpawner : Spawner
     public static string YellowBullet = "Yellow";
     public List<string> listColor = new List<string>() { RedBullet, BlueBullet, GreenBullet, YellowBullet
 };
-protected override void Awake()
+    protected override void Awake()
     {
+     
         Instance = this;
     }
+   // public void Spawn(string prefabName, Vector3 spawnPos, Quaternion rotation,dloa)
 }

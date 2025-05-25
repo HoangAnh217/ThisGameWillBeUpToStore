@@ -88,8 +88,5 @@ public class Tank : MonoBehaviour
         //MergeSystem.Instance.MergeTwoTank()
         GetComponent<TankDespawner>().DeSpawnObj();
     }
-    public void Upgrade()
-    {
-        Debug.Log("Upgrade tank");
-    }
+    
 }

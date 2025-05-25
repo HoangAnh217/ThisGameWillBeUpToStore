@@ -8,7 +8,7 @@ public class TankController : MonoBehaviour
     [SerializeField] private Transform modelTank;
     [SerializeField] private Transform turret;               // Nòng súng (turret) xoay
     [SerializeField] private Transform firePoint;            // Vị trí bắn ra đạn
-    [SerializeField] private float fireRate = 0.3f;            // Thời gian giữa mỗi lần bắn
+    [SerializeField] private float fireRate;            // Thời gian giữa mỗi lần bắn
     [SerializeField] private float detectionRange = 10f;     // Phạm vi phát hiện enemy
     private int amountBullet = 8;
     public int AmountBullet => amountBullet;
@@ -24,6 +24,7 @@ public class TankController : MonoBehaviour
     private Tank tank;
     private CanvasInGameController canvasInGameController;
     private MergeSystem mergeSystem;
+    [SerializeField] private CharacterStatsSO statsSO;
 
     private ProjectileSpawner projectileSpawner;
     private void Start()
@@ -38,6 +39,7 @@ public class TankController : MonoBehaviour
         model.gameObject.SetActive(false);
         modelTank.gameObject.SetActive(true);
         amountBullet = 8;
+        fireRate = statsSO.attackSpeed;
         SetColor(colorIndex);
     }
     void Update()
@@ -105,5 +107,9 @@ public class TankController : MonoBehaviour
     private void SetColor(int index)
     {
         spr.sprite = sps[index];
+    }
+    public void Upgrade()
+    {
+        Debug.Log("Upgrade tank");
     }
 }

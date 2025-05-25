@@ -8,8 +8,9 @@ public class Projectile : MonoBehaviour
     private ProjectileDespawner projectileDespawner;
 
     [SerializeField] private int currentColorIndex;
-   /* [SerializeField] private List<Sprite> sps;
-    [SerializeField] private SpriteRenderer spr;*/
+    /* [SerializeField] private List<Sprite> sps;
+     [SerializeField] private SpriteRenderer spr;*/
+    [SerializeField] private CharacterStatsSO statsSO;
     private void Start()
     {
         projectileDespawner = GetComponent<ProjectileDespawner>();

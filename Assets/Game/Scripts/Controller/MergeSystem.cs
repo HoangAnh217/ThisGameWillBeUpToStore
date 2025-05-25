@@ -64,7 +64,7 @@ public class MergeSystem : MonoBehaviour
         {
             {
                 effectSpawner.Spawn("LevelUp", a.transform.position, Quaternion.identity);
-                a.Upgrade();
+                a.GetComponent<TankController>().Upgrade();
                 canvasInGameController.amountBulletShowUI.OutOfBullet(index);
                 b.GetComponent<Tank>().DeSpawn();
                 // Xóa tank B sau khi merge
