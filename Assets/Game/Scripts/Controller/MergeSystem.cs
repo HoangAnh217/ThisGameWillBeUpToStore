@@ -20,7 +20,7 @@ public class MergeSystem : MonoBehaviour
         effectSpawner = EffectSpawner.Instance;
         canvasInGameController = CanvasInGameController.Instance;
     }
-    public void AddList(Tank tank)
+   /* public void AddList(Tank tank)
     {
         for (int i = 0; i < tankInShootingPoint.Count; i++)
         {
@@ -78,5 +78,5 @@ public class MergeSystem : MonoBehaviour
     public int IndexTank(Tank tank)
     {
         return tankInShootingPoint.IndexOf(tank);
-    }
+    }*/
 }

@@ -23,8 +23,8 @@ public class TankController : MonoBehaviour
     //private TankDespawner tankDespawner;
     private Tank tank;
     private CanvasInGameController canvasInGameController;
-    private MergeSystem mergeSystem;
     [SerializeField] private CharacterStatsSO statsSO;
+    private PointShootingController pointShooting;
 
     private ProjectileSpawner projectileSpawner;
     private void Start()
@@ -33,15 +33,20 @@ public class TankController : MonoBehaviour
       //  tankDespawner = GetComponent<TankDespawner>();
         projectileSpawner = ProjectileSpawner.Instance;
         canvasInGameController = CanvasInGameController.Instance;
-        mergeSystem = MergeSystem.Instance;
+        pointShooting = PointShootingController.Instance;
         tank = GetComponent<Tank>();
 
         model.gameObject.SetActive(false);
         modelTank.gameObject.SetActive(true);
         //fireRate = statsSO.attackSpeed;
+        InitStat();
         SetColor(colorIndex);
         amountBullet = 8;
 
+    }
+    private void InitStat()
+    {
+        fireRate = 0.2f;
     }
     /*private void OnEnable()
     {
@@ -97,13 +102,13 @@ public class TankController : MonoBehaviour
         projectileSpawner.Spawn(projectileSpawner.listColor[colorIndex], firePoint.position, turret.rotation );
         // Đạn tự xử lý bay và va chạm
         amountBullet--;
-        canvasInGameController.amountBulletShowUI.UpdateTmp(mergeSystem.IndexTank(tank),amountBullet);
+        canvasInGameController.amountBulletShowUI.UpdateTmp(pointShooting.IndexTank(tank),amountBullet);
         if (amountBullet <= 0)
         {
 
             Debug.Log("out of bullet");
 
-            canvasInGameController.amountBulletShowUI.OutOfBullet(mergeSystem.IndexTank(tank));
+            canvasInGameController.amountBulletShowUI.OutOfBullet(pointShooting.IndexTank(tank));
 
             tank.DeSpawn();
         }

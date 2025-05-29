@@ -12,10 +12,11 @@ public class Tank : MonoBehaviour
     public float hoverScaleFactor = 1.1f; // Phóng to lên 10%
     private Vector3 originalScale;
     private bool isHovered = false;
-    private MergeSystem mergeSystem;
+
+    private PointShootingController pointShootingController;
     private void Start()
-    {   
-        mergeSystem = MergeSystem.Instance;
+    {
+        pointShootingController = PointShootingController.Instance;
         originalScale = transform.localScale;
     }
 
@@ -62,7 +63,7 @@ public class Tank : MonoBehaviour
         {
             Transform target = PointShootingController.Instance.GetPoint();
             //PointShootingController.Instance.SetObj();
-            mergeSystem.AddList(this);
+            pointShootingController.AddList(this);
 
             transform.SetParent(transform.parent.parent.Find("OutOfHolder"));
             HandlerMovementTank.Instance.ControlMovement(transform, target);      
@@ -82,9 +83,11 @@ public class Tank : MonoBehaviour
     }
     public void DeSpawn()
     {   
-        int indexCurrentTank = mergeSystem.IndexTank(GetComponent<Tank>());
-        PointShootingController.Instance.RemoveObj(indexCurrentTank);
-        MergeSystem.Instance.RemoveAt(indexCurrentTank);
+        int indexCurrentTank = PointShootingController.Instance.IndexTank(GetComponent<Tank>());
+        pointShootingController.RemoveAt(indexCurrentTank);
+
+        Debug.Log("asdasd");
+
         //MergeSystem.Instance.MergeTwoTank()
         GetComponent<TankDespawner>().DeSpawnObj();
     }

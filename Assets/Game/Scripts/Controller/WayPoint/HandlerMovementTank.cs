@@ -133,8 +133,8 @@ public class HandlerMovementTank : MonoBehaviour
 
     private void MoveComplete(Transform tank)
     {
-        mergeSystem.MergeTwoTank();
-        canvasInGameController.amountBulletShowUI.ActiveTmp(mergeSystem.IndexTank(tank.GetComponent<Tank>()));
+        pointShootingController.MergeTwoTank();
+        //canvasInGameController.amountBulletShowUI.ActiveTmp(pointShootingController.IndexTank(tank.GetComponent<Tank>()));
         isBusy = false;
         tank.GetComponent<TankController>().enabled = true;
         Debug.Log("Tank đã đến vị trí cuối!");

@@ -13,15 +13,15 @@ public class AmountBulletShowUI : MonoBehaviour
     }
     public void UpdateTmp(int idPoint,int amountBullet)
     {
-        tmp_List[idPoint].text = amountBullet.ToString();
+      //  tmp_List[idPoint].text = amountBullet.ToString();
     }
     public void OutOfBullet(int idPoint)
     {
-        tmp_List[idPoint].transform.parent.gameObject.SetActive(false);
+//tmp_List[idPoint].transform.parent.gameObject.SetActive(false);
     }
     public void ActiveTmp(int idPoint)
     {
-        tmp_List[idPoint].transform.parent.gameObject.SetActive(true);
-        tmp_List[idPoint].text = "8";
+       // tmp_List[idPoint].transform.parent.gameObject.SetActive(true);
+//tmp_List[idPoint].text = "8";
     }
 }
