@@ -41,7 +41,7 @@ public class TankController : MonoBehaviour
         //fireRate = statsSO.attackSpeed;
         InitStat();
         SetColor(colorIndex);
-        amountBullet = 8;
+        amountBullet = 14;
 
     }
     private void InitStat()

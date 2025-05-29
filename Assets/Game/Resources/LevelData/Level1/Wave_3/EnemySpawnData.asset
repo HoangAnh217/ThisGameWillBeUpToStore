@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: EnemySpawnData
   m_EditorClassIdentifier: 
   NameEnemyPrefabs: Slime
-  AmountOfEnemy: 10
-  SpawnInterval: 0.55
+  AmountOfEnemy: 7
+  SpawnInterval: 0.6
