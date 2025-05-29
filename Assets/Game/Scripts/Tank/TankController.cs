@@ -38,10 +38,14 @@ public class TankController : MonoBehaviour
 
         model.gameObject.SetActive(false);
         modelTank.gameObject.SetActive(true);
-        amountBullet = 8;
-        fireRate = statsSO.attackSpeed;
+        //fireRate = statsSO.attackSpeed;
         SetColor(colorIndex);
+        amountBullet = 8;
+
     }
+    /*private void OnEnable()
+    {
+    }*/
     void Update()
     {
         fireCooldown -= Time.deltaTime;
@@ -106,7 +110,11 @@ public class TankController : MonoBehaviour
     }
     private void SetColor(int index)
     {
+
+        Debug.Log("set color");
+
         spr.sprite = sps[index];
+
     }
     public void Upgrade()
     {

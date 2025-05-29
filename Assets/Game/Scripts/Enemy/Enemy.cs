@@ -39,6 +39,7 @@ public class Enemy : TriBehaviour, IDamageable
         base.OnEnable();
         canvasEnemy.gameObject.SetActive(false);
         health =maxHealth;
+        isAttacking = false;
     }
     private void Update()
     {
@@ -80,7 +81,7 @@ public class Enemy : TriBehaviour, IDamageable
         Debug.Log("Enemy attacks!");
         Player.Instance.TakeDame(30f);
 
-        Die();
+       // Die();
     }
 
 

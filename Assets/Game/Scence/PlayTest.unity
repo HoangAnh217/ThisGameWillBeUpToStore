@@ -3092,6 +3092,7 @@ MonoBehaviour:
   speed: 6.06
   dame: 50
   currentColorIndex: 3
+  statsSO: {fileID: 0}
 --- !u!1 &690790401
 GameObject:
   m_ObjectHideFlags: 0
@@ -3470,6 +3471,7 @@ MonoBehaviour:
   speed: 6.06
   dame: 50
   currentColorIndex: 2
+  statsSO: {fileID: 0}
 --- !u!1 &751694746
 GameObject:
   m_ObjectHideFlags: 0
@@ -4065,6 +4067,7 @@ MonoBehaviour:
   speed: 6.06
   dame: 50
   currentColorIndex: 0
+  statsSO: {fileID: 0}
 --- !u!114 &789503211
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5093,6 +5096,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 96e41a02f6b91c8448ba39f690d8f2d0, type: 3}
   - {fileID: 21300000, guid: 5467e268a627dc4438d2b1333ffbb54d, type: 3}
   spr: {fileID: 1033485986}
+  statsSO: {fileID: 0}
 --- !u!1 &962079269
 GameObject:
   m_ObjectHideFlags: 0
@@ -10081,6 +10085,7 @@ MonoBehaviour:
   speed: 6.06
   dame: 50
   currentColorIndex: 1
+  statsSO: {fileID: 0}
 --- !u!1 &2032225335
 GameObject:
   m_ObjectHideFlags: 0
