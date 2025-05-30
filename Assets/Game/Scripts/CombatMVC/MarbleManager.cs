@@ -1,68 +1,97 @@
-﻿// MarbleManager.cs
-using UnityEngine;
-using DG.Tweening;
-using System.Collections.Generic;
+﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.Splines;
+using Unity.Mathematics;
+using Unity.VisualScripting;
 
 public class MarbleManager : MonoBehaviour
-{
-    [SerializeField] private Transform[] pathPoints; // gán các điểm tạo đường đi
-    [SerializeField] private float spacing = 1.5f;
-    [SerializeField] private float moveDuration = 10f;
+{   
+    public static MarbleManager Instance { get; private set; }
+    [SerializeField] private SplineContainer splineContainer;
+    [SerializeField] private List<MarbleMover2D> marbles = new List<MarbleMover2D>();
+    [SerializeField] private float marbleSpacing; // khoảng cách t giữa 2 viên
     [SerializeField] private MarbleSpawnData marbleSpawnData;
-    private MarbleSpawner marbleSpawner;
-
-    //private List<GameObject> marbles = new List<GameObject>();
-
-    void Start()
+    private Vector2 pointSpawn;
+    float t;
+    private void Awake()
     {
-        marbleSpawner = MarbleSpawner.Instance;
+        Instance = this;
+    }
+    private void Start()
+    {
+        float3 localPos, tangent, up;
+        splineContainer.Spline.Evaluate(0f, out localPos, out tangent, out up);
+
+        // nếu bạn muốn vị trí world (không phải local của container)
+        pointSpawn = splineContainer.transform.TransformPoint((Vector3)localPos);
+
         StartCoroutine(SpawnMarblesCoroutine());
+        t = 2 * 0.5f/ splineContainer.Spline.GetLength();
     }
 
-    IEnumerator SpawnMarblesCoroutine()
+    private void Update()
     {
-        Vector3[] path = GetPath();
+       // UpdateMarblePositions();
+    }
+
+    private IEnumerator SpawnMarblesCoroutine()
+    {
         for (int i = 0; i < marbleSpawnData.spawnList.Count; i++)
         {
             var batch = marbleSpawnData.spawnList[i];
-
             for (int j = 0; j < batch.quantity; j++)
             {
-                Transform marble = marbleSpawner.Spawn(
+                Transform marbleTrans = MarbleSpawner.Instance.Spawn(
                     batch.color,
                     "Marble",
-                    pathPoints[0].position,
+                    pointSpawn,
                     Quaternion.identity
                 );
 
-                marble.transform.position = pathPoints[0].position;
+                MarbleMover2D mover = marbleTrans.GetComponent<MarbleMover2D>();
+                if (mover != null)
+                {
+                    // Thiết lập splineContainer nếu cần
+                    //mover.splineContainer = splineContainer;
+                    // Khởi đặt vị trí t ngay chính xác sau viên trước
+                    /*float tStart = 0f;
+                    if (marbles.Count > 0)
+                    {
+                        tStart = Mathf.Clamp01(marbles[marbles.Count - 1].GetT() - marbleSpacing);
+                    }
+                    mover.SetT(tStart);*/
 
-                marble.transform.DOPath(path, moveDuration, PathType.CatmullRom)
-                    .SetEase(Ease.Linear);
+                    marbles.Add(mover);
+                }
+                else
+                {
+                    Debug.LogWarning("Spawned marble missing MarbleMover2D component!");
+                }
 
-                yield return new WaitForSeconds(spacing); // delay thực sự giữa các viên
+                // Đợi 0.1s trước khi spawn viên kế tiếp (có thể điều chỉnh)
+                yield return new WaitForSeconds(0.5f);
             }
         }
     }
 
-    private Vector3[] GetPath()
+    private void UpdateMarblePositions(int index,float distancT)
     {
-        Vector3[] path = new Vector3[pathPoints.Length];
-        for (int i = 0; i < pathPoints.Length; i++)
+        for (int i = index-1; i >= 0; i--)
         {
-            path[i] = pathPoints[i].position;
-        }
-        return path;
-    }
+            MarbleMover2D frontMarble = marbles[i];
 
-    private float TotalPathLength()
-    {
-        float length = 0f;
-        for (int i = 0; i < pathPoints.Length - 1; i++)
-        {
-            length += Vector3.Distance(pathPoints[i].position, pathPoints[i + 1].position);
+            frontMarble.PullTo(marbles[marbles.Count-1].GetT() + distancT*(marbles.Count-i-2));
+            //frontMarble.PullTo(marbles[i+1].GetT());
         }
-        return length;
+    }
+    public void RemoveMarble(MarbleMover2D marble)
+    {
+        if (marbles.Contains(marble))
+        {   
+            int id = marbles.IndexOf(marble);
+            UpdateMarblePositions(id, marbles[0].GetT() - marbles[1].GetT());
+            marbles.Remove(marble);
+        }
     }
 }

@@ -21,25 +21,20 @@ public class Projectile : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Enemy"))
+        if (collision.CompareTag("Marble"))
         {
-            Enemy enemy = collision.GetComponent<Enemy>();
-            if (enemy != null && enemy.CurrentColorIndex == currentColorIndex)
+            Marble marble = collision.GetComponent<Marble>();
+            if (marble != null && marble.GetCurrentColorIndex() == currentColorIndex)
             {
-                enemy.TakeDamage(dame);
+                marble.Die();
                 // GetComponent<Proj>
                 projectileDespawner.DeSpawnObj();
             }
         }
-        /*else if (collision.CompareTag("Wall"))
-        {
-            Destroy(gameObject); // Destroy the projectile when it hits a wall
-        }*/
+       
     }
     public void SetColor(int index)
     {
-
-        //spr.sprite = sps[index];
         currentColorIndex = index;
     }
 }

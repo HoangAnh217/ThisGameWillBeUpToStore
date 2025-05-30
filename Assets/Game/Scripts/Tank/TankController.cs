@@ -46,7 +46,7 @@ public class TankController : MonoBehaviour
     }
     private void InitStat()
     {
-        fireRate = 0.2f;
+        fireRate = 0.5f;
     }
     /*private void OnEnable()
     {
@@ -55,7 +55,7 @@ public class TankController : MonoBehaviour
     {
         fireCooldown -= Time.deltaTime;
 
-        Enemy nearestEnemy = FindNearestEnemyWithSameColor();
+        Marble nearestEnemy = FindNearestEnemyWithSameColor();
         if (nearestEnemy != null)
         {
             RotateTurretTowards(nearestEnemy.transform.position);
@@ -67,22 +67,22 @@ public class TankController : MonoBehaviour
             }
         }
     }
-    Enemy FindNearestEnemyWithSameColor()
+    Marble FindNearestEnemyWithSameColor()
     {
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, detectionRange, enemyLayer);
-        Enemy nearest = null;
+        Marble nearest = null;
         float minDist = Mathf.Infinity;
 
         foreach (var hit in hits)
         {
-            Enemy enemy = hit.GetComponent<Enemy>();
-            if (enemy != null && enemy.CurrentColorIndex == colorIndex)
+            Marble marble = hit.GetComponent<Marble>();
+            if (marble != null && marble.GetCurrentColorIndex() == colorIndex)
             {
-                float dist = Vector3.Distance(transform.position, enemy.transform.position);
+                float dist = Vector3.Distance(transform.position, marble.transform.position);
                 if (dist < minDist)
                 {
                     minDist = dist;
-                    nearest = enemy;
+                    nearest = marble;
                 }
             }
         }
