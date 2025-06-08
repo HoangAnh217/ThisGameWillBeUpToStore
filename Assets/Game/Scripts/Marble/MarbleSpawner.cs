@@ -8,7 +8,7 @@ public class MarbleSpawner : Spawner
     public static string Marble = "Marble";
     protected override void Awake()
     {
-        if (Instance == null)
+        /*if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject); // Giữ đối tượng này khi chuyển cảnh
@@ -16,7 +16,8 @@ public class MarbleSpawner : Spawner
         else
         {
             Destroy(gameObject); // Nếu đã có một instance, hủy đối tượng này
-        }
+        }*/
+        Instance = this;
     }
     public Transform Spawn(MarbleColor color,string name, Vector3 pos, Quaternion rotattion)
     {

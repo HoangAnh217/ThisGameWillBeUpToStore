@@ -14,19 +14,9 @@ public class MatrixGameController : MonoBehaviour
         model.OnChangedMap += HandleMapUpdated;
        // model.OnCarCollision += HandleCarCollision;
     }
-
-    private void Update()
+    private void Start()
     {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            model.LoadCarMatrixFromCSV_Resources(mapName);
-        }
-
-       /* if (Input.GetKeyDown(KeyCode.E))
-        {
-            bool escaped = model.IsEscape(0);
-            Debug.Log("Escape result: " + escaped);
-        }*/
+        model.LoadCarMatrixFromCSV_Resources(mapName);
     }
 
     private void HandleMapUpdated()

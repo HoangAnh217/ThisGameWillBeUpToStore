@@ -80,7 +80,7 @@ public class PointShootingController : MonoBehaviour
     }
     public void MergeTwoTank()
     {
-        for (int i = 0; i < tankInShootingPoint.Count; i++)
+        /*for (int i = 0; i < tankInShootingPoint.Count; i++)
         {
             Tank tank = tankInShootingPoint[i];
             if (tank == null)
@@ -103,7 +103,7 @@ public class PointShootingController : MonoBehaviour
                 }
             }
 
-        }
+        }*/
     }
     private void ActiveMergeTwoTank(Tank a, Tank b, int index)
     {

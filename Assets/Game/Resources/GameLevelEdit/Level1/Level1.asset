@@ -14,12 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnList:
   - color: 0
-    quantity: 10
+    quantity: 8
   - color: 1
-    quantity: 11
-  - color: 3
-    quantity: 12
+    quantity: 10
   - color: 2
-    quantity: 11
-  - color: 3
+    quantity: 8
+  - color: 1
     quantity: 6

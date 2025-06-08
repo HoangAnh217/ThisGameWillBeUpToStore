@@ -9,11 +9,12 @@ public class MarbleManager : MonoBehaviour
 {   
     public static MarbleManager Instance { get; private set; }
     [SerializeField] private SplineContainer splineContainer;
-    [SerializeField] private List<MarbleMover2D> marbles = new List<MarbleMover2D>();
+    [SerializeField] private List<Marble> marbles = new List<Marble>();
     [SerializeField] private float marbleSpacing; // khoảng cách t giữa 2 viên
     [SerializeField] private MarbleSpawnData marbleSpawnData;
     private Vector2 pointSpawn;
     float t;
+    private int amountOfMarbles;
     private void Awake()
     {
         Instance = this;
@@ -26,6 +27,7 @@ public class MarbleManager : MonoBehaviour
         // nếu bạn muốn vị trí world (không phải local của container)
         pointSpawn = splineContainer.transform.TransformPoint((Vector3)localPos);
 
+        amountOfMarbles = marbleSpawnData.GetTotalMarbles();
         StartCoroutine(SpawnMarblesCoroutine());
         t = 2 * 0.5f/ splineContainer.Spline.GetLength();
     }
@@ -49,7 +51,7 @@ public class MarbleManager : MonoBehaviour
                     Quaternion.identity
                 );
 
-                MarbleMover2D mover = marbleTrans.GetComponent<MarbleMover2D>();
+                Marble mover = marbleTrans.GetComponent<Marble>();
                 if (mover != null)
                 {
                     // Thiết lập splineContainer nếu cần
@@ -70,23 +72,31 @@ public class MarbleManager : MonoBehaviour
                 }
 
                 // Đợi 0.1s trước khi spawn viên kế tiếp (có thể điều chỉnh)
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(marbleSpacing);
             }
         }
     }
 
     private void UpdateMarblePositions(int index,float distancT)
-    {
+    {   
+        float t = marbles[index].GetT();
         for (int i = index-1; i >= 0; i--)
         {
-            MarbleMover2D frontMarble = marbles[i];
+            Marble frontMarble = marbles[i];
 
-            frontMarble.PullTo(marbles[marbles.Count-1].GetT() + distancT*(marbles.Count-i-2));
+           // frontMarble.PullTo(marbles[marbles.Count-1].GetT() + distancT*(marbles.Count-i-2));
+            frontMarble.PullTo(t + distancT*(index-1-i));
             //frontMarble.PullTo(marbles[i+1].GetT());
         }
     }
-    public void RemoveMarble(MarbleMover2D marble)
+    public void RemoveMarble(Marble marble)
     {
+        amountOfMarbles--;
+        if (amountOfMarbles<=0)
+        {
+            Debug.Log("Win .");
+            return;
+        }
         if (marbles.Contains(marble))
         {   
             int id = marbles.IndexOf(marble);

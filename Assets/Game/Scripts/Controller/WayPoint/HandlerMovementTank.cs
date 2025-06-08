@@ -51,7 +51,6 @@ public class HandlerMovementTank : MonoBehaviour
         {
 
             pos = tank.position;
-            Debug.Log("Pos: " + pos.y);
             tank.Translate(dir* speed * Time.deltaTime, Space.Self);
             yield return null; // Chờ 1 frame
             if (Mathf.Abs(pos.x) > limitX)

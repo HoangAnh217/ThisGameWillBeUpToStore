@@ -1,15 +1,17 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class TankController : MonoBehaviour
 {
+    [SerializeField] private Transform detectionCenter;
     [SerializeField] private Transform model;
     [SerializeField] private Transform modelTank;
     [SerializeField] private Transform turret;               // Nòng súng (turret) xoay
     [SerializeField] private Transform firePoint;            // Vị trí bắn ra đạn
     [SerializeField] private float fireRate;            // Thời gian giữa mỗi lần bắn
-    [SerializeField] private float detectionRange = 10f;     // Phạm vi phát hiện enemy
+    [SerializeField] private Vector2 detectionRange;     // Phạm vi phát hiện enemy
     private int amountBullet = 8;
     public int AmountBullet => amountBullet;
     private int colorIndex;  // Màu của trụ (để so với enemy)
@@ -23,7 +25,7 @@ public class TankController : MonoBehaviour
     //private TankDespawner tankDespawner;
     private Tank tank;
     private CanvasInGameController canvasInGameController;
-    [SerializeField] private CharacterStatsSO statsSO;
+   // [SerializeField] private CharacterStatsSO statsSO;
     private PointShootingController pointShooting;
 
     private ProjectileSpawner projectileSpawner;
@@ -41,7 +43,7 @@ public class TankController : MonoBehaviour
         //fireRate = statsSO.attackSpeed;
         InitStat();
         SetColor(colorIndex);
-        amountBullet = 14;
+        amountBullet = 8;
 
     }
     private void InitStat()
@@ -55,28 +57,29 @@ public class TankController : MonoBehaviour
     {
         fireCooldown -= Time.deltaTime;
 
-        Marble nearestEnemy = FindNearestEnemyWithSameColor();
+        Marble nearestEnemy = FindNearestEnemyWithSameColorAndNotTarget();
         if (nearestEnemy != null)
         {
             RotateTurretTowards(nearestEnemy.transform.position);
 
             if (fireCooldown <= 0f)
             {
-                Shoot();
+                Shoot(nearestEnemy);
+                nearestEnemy.SetTarget(false);
                 fireCooldown = fireRate;
             }
         }
     }
-    Marble FindNearestEnemyWithSameColor()
+    Marble FindNearestEnemyWithSameColorAndNotTarget()
     {
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, detectionRange, enemyLayer);
+        Collider2D[] hits = Physics2D.OverlapBoxAll(detectionCenter.position, detectionRange, enemyLayer);
         Marble nearest = null;
         float minDist = Mathf.Infinity;
 
         foreach (var hit in hits)
         {
             Marble marble = hit.GetComponent<Marble>();
-            if (marble != null && marble.GetCurrentColorIndex() == colorIndex)
+            if (marble != null && marble.GetCurrentColorIndex() == colorIndex && marble.IsTarget)
             {
                 float dist = Vector3.Distance(transform.position, marble.transform.position);
                 if (dist < minDist)
@@ -86,7 +89,6 @@ public class TankController : MonoBehaviour
                 }
             }
         }
-
         return nearest;
     }
 
@@ -97,12 +99,14 @@ public class TankController : MonoBehaviour
         turret.rotation = Quaternion.Euler(0, 0, angle );
     }
 
-    void Shoot()
+    void Shoot(Marble a)
     {
-        projectileSpawner.Spawn(projectileSpawner.listColor[colorIndex], firePoint.position, turret.rotation );
+        Transform bullet = projectileSpawner.Spawn(projectileSpawner.listColor[colorIndex], firePoint.position, turret.rotation );
         // Đạn tự xử lý bay và va chạm
         amountBullet--;
         canvasInGameController.amountBulletShowUI.UpdateTmp(pointShooting.IndexTank(tank),amountBullet);
+        //  bullet.transform.DOMove(a.position, 0.5f).SetEase(Ease.Linear);
+        bullet.GetComponent<Projectile>().MoveToTarget(a);
         if (amountBullet <= 0)
         {
 
@@ -116,8 +120,6 @@ public class TankController : MonoBehaviour
     private void SetColor(int index)
     {
 
-        Debug.Log("set color");
-
         spr.sprite = sps[index];
 
     }
@@ -125,4 +127,13 @@ public class TankController : MonoBehaviour
     {
         Debug.Log("Upgrade tank");
     }
+    private void OnDrawGizmosSelected()
+    {
+        if (detectionCenter == null) return;
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(detectionCenter.position, detectionRange);
+    }
+
+
 }

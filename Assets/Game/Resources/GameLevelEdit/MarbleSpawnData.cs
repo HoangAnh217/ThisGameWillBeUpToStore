@@ -14,4 +14,16 @@ public class MarbleSpawnData : ScriptableObject
     }
 
     public List<MarbleBatch> spawnList = new List<MarbleBatch>();
+
+    public int GetTotalMarbles()
+    {
+        int total = 0;
+        foreach (var batch in spawnList)
+        {
+            total += batch.quantity;
+        }
+        return total;
+    }
 }
+
+
