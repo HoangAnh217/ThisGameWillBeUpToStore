@@ -44,7 +44,7 @@ public class MatrixGameModel
                     Color.yellow,
                 };*/
 
-                var car = new GameObjectModel(new Vector2(x, y), angle, value, new Vector2(0.4f, 0.4f));
+                var car = new GameObjectModel(new Vector2(x, y), angle, value, new Vector2(0.75f, 0.75f));
                 Cars.Add(car);
             }
             catch (Exception e)

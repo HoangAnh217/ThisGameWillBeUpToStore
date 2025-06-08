@@ -9,8 +9,9 @@ public class ProjectileSpawner : Spawner
     public static string BlueBullet = "Blue";
     public static string GreenBullet = "Green";
     public static string YellowBullet = "Yellow";
-    public List<string> listColor = new List<string>() { RedBullet, BlueBullet, GreenBullet, YellowBullet
-};
+    public static string PurpleBullet = "Purple";
+    public static string AquaBullet = "Aqua";
+    public List<string> listColor = new List<string>() { RedBullet, BlueBullet, GreenBullet, YellowBullet,PurpleBullet, AquaBullet };
     protected override void Awake()
     {
      

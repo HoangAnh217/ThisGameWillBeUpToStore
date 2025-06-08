@@ -102,6 +102,9 @@ public class TankController : MonoBehaviour
     void Shoot(Marble a)
     {
         Transform bullet = projectileSpawner.Spawn(projectileSpawner.listColor[colorIndex], firePoint.position, turret.rotation );
+
+        Debug.Log(colorIndex);
+
         // Đạn tự xử lý bay và va chạm
         amountBullet--;
         canvasInGameController.amountBulletShowUI.UpdateTmp(pointShooting.IndexTank(tank),amountBullet);
