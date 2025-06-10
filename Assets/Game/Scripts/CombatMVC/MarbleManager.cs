@@ -8,10 +8,10 @@ using Unity.VisualScripting;
 public class MarbleManager : MonoBehaviour
 {   
     public static MarbleManager Instance { get; private set; }
-    [SerializeField] private SplineContainer splineContainer;
+    private SplineContainer splineContainer;
     [SerializeField] private List<Marble> marbles = new List<Marble>();
     [SerializeField] private float marbleSpacing; // khoảng cách t giữa 2 viên
-    [SerializeField] private MarbleSpawnData marbleSpawnData;
+    private MarbleSpawnData marbleSpawnData;
     private Vector2 pointSpawn;
     float t;
     private int amountOfMarbles;
@@ -21,9 +21,11 @@ public class MarbleManager : MonoBehaviour
     }
     private void Start()
     {
+        splineContainer = InitLevel.currentSpline;
         float3 localPos, tangent, up;
         splineContainer.Spline.Evaluate(0f, out localPos, out tangent, out up);
 
+        marbleSpawnData = InitLevel.spawnDatas;
         // nếu bạn muốn vị trí world (không phải local của container)
         pointSpawn = splineContainer.transform.TransformPoint((Vector3)localPos);
 

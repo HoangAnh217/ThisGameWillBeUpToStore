@@ -2,7 +2,7 @@
 
 public class MatrixGameController : MonoBehaviour
 {
-    [SerializeField] private string mapName = "map1";
+    private string mapName = "map1";
     public static MatrixGameController Instance { get; private set; }
 
     private MatrixGameModel model;
@@ -15,7 +15,8 @@ public class MatrixGameController : MonoBehaviour
        // model.OnCarCollision += HandleCarCollision;
     }
     private void Start()
-    {
+    {   
+        mapName = InitLevel.mapName; // Lấy tên bản đồ từ InitLevel
         model.LoadCarMatrixFromCSV_Resources(mapName);
     }
 

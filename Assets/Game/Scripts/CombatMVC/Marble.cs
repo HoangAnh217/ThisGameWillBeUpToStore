@@ -59,7 +59,7 @@ public class Marble : MonoBehaviour
     private MarbleDespawn marbleDespawn;
 
     //
-    public SplineContainer splineContainer;
+    private SplineContainer splineContainer;
     [SerializeField] private float speed = 2f;
 
     private float t = 0f;
@@ -82,6 +82,7 @@ public class Marble : MonoBehaviour
     private void Start()
     {
         marbleDespawn = GetComponent<MarbleDespawn>();
+        splineContainer = InitLevel.currentSpline;
         beTarget = true;
     }
     public void SetColor(MarbleColor colorType)
@@ -131,6 +132,7 @@ public class Marble : MonoBehaviour
         if (t == 1)
         {
             Debug.Log("Lose");
+            UI_Manager.Instance.ShowPanelLose();
         }
 
         splineContainer.Spline.Evaluate(t, out pos, out tangent, out up);

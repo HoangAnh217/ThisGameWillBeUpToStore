@@ -46,7 +46,7 @@ public class LevelManager : MonoBehaviour
     void LoadLevels()
     {
         levelList.Clear();
-
+        currentLevel = SaveData.LoadLevel();
         foreach (Transform child in levelsParent)
         {
             levelList.Add(child);
