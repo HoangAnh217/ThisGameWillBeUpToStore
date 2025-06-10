@@ -94,7 +94,7 @@ public class MarbleManager : MonoBehaviour
         amountOfMarbles--;
         if (amountOfMarbles<=0)
         {
-            Debug.Log("Win .");
+            UI_Manager.Instance.ShowPanelWin();
             return;
         }
         if (marbles.Contains(marble))
