@@ -7,10 +7,11 @@ using UnityEngine.Splines;
 public class InitLevel : MonoBehaviour
 {   
     public static InitLevel Instance { get; private set; }
+
     public static MarbleSpawnData spawnDatas;
     public static string mapName;
-
     public static SplineContainer currentSpline;
+    private GameObject prefabsEnvironment; 
     private void Awake()
     {
         Instance = this;
