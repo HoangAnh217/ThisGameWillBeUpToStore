@@ -28,7 +28,12 @@ public class SceneController : MonoBehaviour
     }
     public void LoadScene(int sceneIndex)
     {
-        StartCoroutine(LoadLevel(sceneIndex));
+        if (sceneIndex > SaveData.LoadLevel())
+        {
+            Debug.Log("Level locked");
+            return;
+        }
+        StartCoroutine(LoadLevel(1));
     }
     private IEnumerator LoadLevel(int sceneIndex)
     {

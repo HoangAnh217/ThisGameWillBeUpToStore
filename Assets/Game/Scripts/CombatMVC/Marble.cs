@@ -30,19 +30,6 @@ public class Marble : MonoBehaviour
         beTarget = value;
         Debug.Log("SetTarget: " + value);
     }
-    private Color GetColor(MarbleColor colorType)
-    {
-        switch (colorType)
-        {
-            case MarbleColor.Red: return Color.red;
-            case MarbleColor.Blue: return Color.blue;
-            case MarbleColor.Green: return Color.green;
-            case MarbleColor.Yellow: return Color.yellow;
-            case MarbleColor.Purple: return new Color(0.6f, 0.2f, 0.8f); // tím custom
-            case MarbleColor.Aqua: return new Color(0, 1, 1); // tím custom
-            default: return Color.white;
-        }
-    }
     public int GetCurrentColorIndex()
     {
         switch (currentColorType)
@@ -52,6 +39,7 @@ public class Marble : MonoBehaviour
             case MarbleColor.Green: return 2;
             case MarbleColor.Yellow: return 3;
             case MarbleColor.Purple: return 4;
+            case MarbleColor.Aqua: return 5 ;
             default: return -1;
         }
     }
@@ -60,7 +48,7 @@ public class Marble : MonoBehaviour
 
     //
     private SplineContainer splineContainer;
-    [SerializeField] private float speed = 2f;
+    public static float speed = 1.4f;
 
     private float t = 0f;
     private float targetT;
@@ -132,7 +120,7 @@ public class Marble : MonoBehaviour
         if (t == 1)
         {
             Debug.Log("Lose");
-            UI_Manager.Instance.ShowPanelLose();
+            //UI_Manager.Instance.ShowPanelLose();
         }
 
         splineContainer.Spline.Evaluate(t, out pos, out tangent, out up);

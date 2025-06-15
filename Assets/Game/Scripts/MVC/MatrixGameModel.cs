@@ -44,7 +44,7 @@ public class MatrixGameModel
                     Color.yellow,
                 };*/
 
-                var car = new GameObjectModel(new Vector2(x, y), angle, value, new Vector2(0.75f, 0.75f));
+                var car = new GameObjectModel(new Vector2(x, y), angle, value, new Vector2(0.7f, 0.7f));
                 Cars.Add(car);
             }
             catch (Exception e)
@@ -57,12 +57,12 @@ public class MatrixGameModel
         OnChangedMap?.Invoke();
     }
 
-    public bool IsEscape(int index)
+    public bool IsEscape(int index, out Vector2 pos)
     {
         if (index < 0 || index >= Cars.Count)
         {
+            pos = Vector2.zero;
             return false;
-
         }
 
         GameObjectModel selectedCar = Cars[index];
@@ -92,16 +92,24 @@ public class MatrixGameModel
         {
             if (car == selectedCar) continue;
 
-            if (CollisionChecker.CheckRayCollision(car, rayStart1, rayEnd1) ||
-                CollisionChecker.CheckRayCollision(car, rayStart2, rayEnd2))
+            Vector2 tempPos;
+            if (CollisionChecker.CheckRayCollision(car, rayStart1, rayEnd1, out tempPos))
             {
-               // OnCarCollision?.Invoke(Cars.IndexOf(car));
-                Debug.Log($"Xe  va chạm với xe {Cars.IndexOf(car)}");
+                pos = tempPos;
+                Debug.Log($"Xe va chạm với xe {Cars.IndexOf(car)} tại {pos}");
                 return false;
             }
+            if (CollisionChecker.CheckRayCollision(car, rayStart2, rayEnd2, out tempPos))
+            {
+                pos = tempPos;
+                Debug.Log($"Xe va chạm với xe {Cars.IndexOf(car)} tại {pos}");
+                return false;
+            }
+
         }
 
         Cars.Remove(selectedCar);
+        pos = selectedCar._position;
         return true;
     }
 }

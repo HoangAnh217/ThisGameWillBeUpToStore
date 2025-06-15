@@ -8,9 +8,9 @@ public class LevelManager : MonoBehaviour
     [Header("UI Setup")]
     public Transform levelsParent;             // Parent chứa các level buttons
     //public GameObject characterIcon;           // Icon nhân vật
-    public ScrollRect scrollRect;              // ScrollRect chứa danh sách level
+   /* public ScrollRect scrollRect;              // ScrollRect chứa danh sách level
     public RectTransform content;              // Content của ScrollView
-    public RectTransform viewport;             // Viewport của ScrollView
+    public RectTransform viewport;   */          // Viewport của ScrollView
 
     [Header("Level Settings")]
     public int currentLevel = 1;               // Level hiện tại (bắt đầu từ 1)
@@ -29,7 +29,7 @@ public class LevelManager : MonoBehaviour
         //Invoke("ScrollToCurrentLevel", 0.1f);  // Đợi layout xong rồi scroll
     }
     private void Update()
-    {
+    {/*
         float posY = content.anchoredPosition.y;
         if (posY < minY)
         {
@@ -40,7 +40,7 @@ public class LevelManager : MonoBehaviour
         {
             float newY = Mathf.Lerp(posY, maxY, Time.deltaTime * 5f);
             content.anchoredPosition = new Vector2(content.anchoredPosition.x, newY);
-        }
+        }*/
     }
 
     void LoadLevels()
@@ -77,20 +77,15 @@ public class LevelManager : MonoBehaviour
             return;
         }
 
-        // Gán character icon vào đúng level
-        Transform currentTransform = levelList[currentLevel - 1];
-      //  characterIcon.transform.SetParent(currentTransform);
-      //  characterIcon.transform.localPosition = Vector3.zero;
-
-        // Highlight level hiện tại
-        foreach (Transform level in levelList)
+        for (int i = 0; i < levelList.Count; i++)
         {
-            Image img = level.GetComponent<Image>();
-            if (img != null) img.color = Color.gray;
+            Image img = levelList[i].GetComponent<Image>();
+            if (img != null)
+            {
+                img.color = (i < currentLevel) ? Color.yellow : Color.gray;
+            }
         }
 
-        Image currentImg = currentTransform.GetComponent<Image>();
-        if (currentImg != null) currentImg.color = Color.yellow;
     }
 
     void OnLevelClicked(int level)

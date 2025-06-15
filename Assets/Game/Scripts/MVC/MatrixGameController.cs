@@ -26,9 +26,9 @@ public class MatrixGameController : MonoBehaviour
         GameView.Instance.UpdateMatrix(model.Cars); 
     }
 
-    public bool HandleCarCollision(int carIndex)
+    public bool HandleCarCollision(int carIndex , out Vector2 pos)
     {
-        if (model.IsEscape(carIndex))
+        if (model.IsEscape(carIndex,out pos))
         {
             Debug.Log("out");
 

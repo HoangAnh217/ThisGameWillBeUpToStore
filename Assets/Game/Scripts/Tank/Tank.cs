@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using DG.Tweening;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Tank : MonoBehaviour
@@ -59,14 +60,30 @@ public class Tank : MonoBehaviour
             return;
         }
         int index = transform.GetSiblingIndex();
-        if (!MatrixGameController.Instance.HandleCarCollision(index))
+        Vector2 posCollision;
+        if (!MatrixGameController.Instance.HandleCarCollision(index, out posCollision))
         {
             Transform target = PointShootingController.Instance.GetPoint();
             //PointShootingController.Instance.SetObj();
             pointShootingController.AddList(this);
 
             transform.SetParent(transform.parent.parent.Find("OutOfHolder"));
-            HandlerMovementTank.Instance.ControlMovement(transform, target);      
+            HandlerMovementTank.Instance.ControlMovement(transform, target);
+        }
+        else
+        {
+            Vector3 originalPos = transform.position;
+
+            transform.DOMove(posCollision, 0.2f)
+                .OnComplete(() =>
+                {
+                    transform.DOShakePosition(0.2f, strength: 0.3f, vibrato: 10, randomness: 90)
+                        .OnComplete(() =>
+                        {
+                            transform.DOMove(originalPos, 0.2f);
+                        });
+
+                });
         }
     }
     public void SetColor(int index)

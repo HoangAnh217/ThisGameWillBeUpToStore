@@ -21,6 +21,8 @@ public class MarbleManager : MonoBehaviour
     }
     private void Start()
     {
+        Marble.speed = 2.1f;
+        marbleSpacing = 0.3f; // khoảng cách giữa các viên bi
         splineContainer = InitLevel.currentSpline;
         float3 localPos, tangent, up;
         splineContainer.Spline.Evaluate(0f, out localPos, out tangent, out up);
@@ -33,10 +35,11 @@ public class MarbleManager : MonoBehaviour
         StartCoroutine(SpawnMarblesCoroutine());
         t = 2 * 0.5f/ splineContainer.Spline.GetLength();
     }
-
+    float timer = 0f;
     private void Update()
     {
        // UpdateMarblePositions();
+       timer += Time.deltaTime;
     }
 
     private IEnumerator SpawnMarblesCoroutine()
@@ -45,7 +48,7 @@ public class MarbleManager : MonoBehaviour
         {
             var batch = marbleSpawnData.spawnList[i];
             for (int j = 0; j < batch.quantity; j++)
-            {
+            {   
                 Transform marbleTrans = MarbleSpawner.Instance.Spawn(
                     batch.color,
                     "Marble",
@@ -74,6 +77,11 @@ public class MarbleManager : MonoBehaviour
                 }
 
                 // Đợi 0.1s trước khi spawn viên kế tiếp (có thể điều chỉnh)
+                if (timer >2.5f)
+                {
+                    Marble.speed = 0.7f;
+                    marbleSpacing = 0.9f;
+                }
                 yield return new WaitForSeconds(marbleSpacing);
             }
         }
