@@ -28,7 +28,7 @@ MonoBehaviour:
   - color: 5
     quantity: 2
   - color: 4
-    quantity: 10
+    quantity: 5
   - color: 1
     quantity: 11
   - color: 5
@@ -117,3 +117,5 @@ MonoBehaviour:
     quantity: 7
   - color: 3
     quantity: 2
+  - color: 4
+    quantity: 5
