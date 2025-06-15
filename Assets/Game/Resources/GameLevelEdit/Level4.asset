@@ -13,23 +13,107 @@ MonoBehaviour:
   m_Name: Level4
   m_EditorClassIdentifier: 
   spawnList:
-  - color: 0
+  - color: 5
+    quantity: 11
+  - color: 1
     quantity: 6
-  - color: 4
-    quantity: 4
   - color: 1
-    quantity: 4
+    quantity: 6
   - color: 3
-    quantity: 10
-  - color: 0
+    quantity: 5
+  - color: 3
+    quantity: 1
+  - color: 3
+    quantity: 1
+  - color: 5
+    quantity: 2
+  - color: 4
     quantity: 10
   - color: 1
-    quantity: 4
+    quantity: 11
+  - color: 5
+    quantity: 5
+  - color: 0
+    quantity: 9
+  - color: 4
+    quantity: 1
+  - color: 4
+    quantity: 3
   - color: 2
-    quantity: 8
+    quantity: 7
+  - color: 3
+    quantity: 4
+  - color: 0
+    quantity: 5
   - color: 4
     quantity: 12
-  - color: 3
-    quantity: 6
+  - color: 1
+    quantity: 12
   - color: 2
+    quantity: 4
+  - color: 0
+    quantity: 7
+  - color: 2
+    quantity: 2
+  - color: 3
     quantity: 8
+  - color: 4
+    quantity: 1
+  - color: 2
+    quantity: 3
+  - color: 5
+    quantity: 7
+  - color: 1
+    quantity: 1
+  - color: 1
+    quantity: 3
+  - color: 4
+    quantity: 1
+  - color: 0
+    quantity: 3
+  - color: 5
+    quantity: 6
+  - color: 1
+    quantity: 3
+  - color: 5
+    quantity: 4
+  - color: 3
+    quantity: 9
+  - color: 2
+    quantity: 5
+  - color: 2
+    quantity: 7
+  - color: 5
+    quantity: 11
+  - color: 1
+    quantity: 7
+  - color: 0
+    quantity: 3
+  - color: 5
+    quantity: 8
+  - color: 2
+    quantity: 3
+  - color: 1
+    quantity: 7
+  - color: 4
+    quantity: 2
+  - color: 3
+    quantity: 3
+  - color: 0
+    quantity: 2
+  - color: 4
+    quantity: 5
+  - color: 5
+    quantity: 10
+  - color: 2
+    quantity: 9
+  - color: 0
+    quantity: 3
+  - color: 3
+    quantity: 7
+  - color: 4
+    quantity: 6
+  - color: 4
+    quantity: 7
+  - color: 3
+    quantity: 2

@@ -18,7 +18,7 @@ public class CarExporter : MonoBehaviour
             float angle = child.eulerAngles.z;
 
             // Lấy value từ script nếu có, hoặc gán tạm
-            int value = Random.Range(0,4);
+            int value = Random.Range(0,6);
 /*            CarModel model = child.GetComponent<CarModel>();
             if (model != null) value = model.value;*/
 

@@ -15,15 +15,17 @@ public class MarbleManager : MonoBehaviour
     private Vector2 pointSpawn;
     float t;
     private int amountOfMarbles;
+    private float distanceT;
     private void Awake()
     {
         Instance = this;
     }
     private void Start()
     {
+        splineContainer = InitLevel.currentSpline;
         Marble.speed = 2.1f;
         marbleSpacing = 0.3f; // khoảng cách giữa các viên bi
-        splineContainer = InitLevel.currentSpline;
+        distanceT = Marble.speed * marbleSpacing / splineContainer.Spline.GetLength();
         float3 localPos, tangent, up;
         splineContainer.Spline.Evaluate(0f, out localPos, out tangent, out up);
 
@@ -110,7 +112,7 @@ public class MarbleManager : MonoBehaviour
         if (marbles.Contains(marble))
         {   
             int id = marbles.IndexOf(marble);
-            UpdateMarblePositions(id, marbles[0].GetT() - marbles[1].GetT());
+            UpdateMarblePositions(id, distanceT);
             marbles.Remove(marble);
         }
     }

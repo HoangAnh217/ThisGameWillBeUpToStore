@@ -67,7 +67,7 @@ public class MatrixGameModel
 
         GameObjectModel selectedCar = Cars[index];
         Vector2 rayStart = selectedCar._position;
-        float halfWidth = selectedCar._size.x/2;
+        float halfWidth = selectedCar._size.x/2 - 0.1f;
 
         Vector2 perpendicular = new Vector2(
             Mathf.Cos((selectedCar._angle + 90) * Mathf.Deg2Rad),
@@ -84,10 +84,11 @@ public class MatrixGameModel
 
         Vector2 rayEnd1 = rayStart1 + rayDirection;
         Vector2 rayEnd2 = rayStart2 + rayDirection;
-
-      /*  Debug.Log(rayStart1 +"  " + rayEnd1);
-        Debug.Log(rayStart2 +"  " + rayEnd2);
-*/
+        Debug.DrawLine(rayStart1, rayEnd1, Color.red, 2f);
+        Debug.DrawLine(rayStart2, rayEnd2, Color.red, 2f);
+        /*  Debug.Log(rayStart1 +"  " + rayEnd1);
+          Debug.Log(rayStart2 +"  " + rayEnd2);
+  */
         foreach (GameObjectModel car in Cars)
         {
             if (car == selectedCar) continue;
