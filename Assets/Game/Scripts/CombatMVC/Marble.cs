@@ -52,7 +52,9 @@ public class Marble : MonoBehaviour
 
     private float t = 0f;
     private float targetT;
+    public float TargetT => targetT;
     [SerializeField] private bool isBeingPulled = false;
+    public bool IsBeingPulled => isBeingPulled; 
     float3 pos, tangent, up;
     public float GetT() => t;
 
@@ -95,7 +97,7 @@ public class Marble : MonoBehaviour
             if (targetT > newTargetT)
             {
                 targetT = newTargetT;
-            }
+            } 
         }
         targetT = Mathf.Clamp01(newTargetT);
         isBeingPulled = true;

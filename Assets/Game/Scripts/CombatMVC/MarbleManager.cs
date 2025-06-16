@@ -92,13 +92,19 @@ public class MarbleManager : MonoBehaviour
     private void UpdateMarblePositions(int index,float distancT)
     {   
         float t = marbles[index].GetT();
+        if (marbles[index].IsBeingPulled)
+        {
+            for (int i = index - 1; i >= 0; i--)
+            {
+                Marble frontMarble = marbles[i];
+                frontMarble.PullTo(marbles[index].TargetT + distancT * (index - 1 - i) );
+            }
+        } 
+        else 
         for (int i = index-1; i >= 0; i--)
         {
             Marble frontMarble = marbles[i];
-
-           // frontMarble.PullTo(marbles[marbles.Count-1].GetT() + distancT*(marbles.Count-i-2));
             frontMarble.PullTo(t + distancT*(index-1-i));
-            //frontMarble.PullTo(marbles[i+1].GetT());
         }
     }
     public void RemoveMarble(Marble marble)
