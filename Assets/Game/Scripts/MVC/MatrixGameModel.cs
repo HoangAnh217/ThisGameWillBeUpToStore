@@ -57,17 +57,19 @@ public class MatrixGameModel
         OnChangedMap?.Invoke();
     }
 
-    public bool IsEscape(int index, out Vector2 pos)
+    public bool IsEscape(int index, out Vector2 pos, out int indexCar)
     {
+        pos = Vector2.zero;
+        indexCar = -1;
+
         if (index < 0 || index >= Cars.Count)
         {
-            pos = Vector2.zero;
             return false;
         }
 
         GameObjectModel selectedCar = Cars[index];
         Vector2 rayStart = selectedCar._position;
-        float halfWidth = selectedCar._size.x/2 - 0.1f;
+        float halfWidth = selectedCar._size.x / 2 - 0.1f;
 
         Vector2 perpendicular = new Vector2(
             Mathf.Cos((selectedCar._angle + 90) * Mathf.Deg2Rad),
@@ -84,33 +86,30 @@ public class MatrixGameModel
 
         Vector2 rayEnd1 = rayStart1 + rayDirection;
         Vector2 rayEnd2 = rayStart2 + rayDirection;
+
         Debug.DrawLine(rayStart1, rayEnd1, Color.red, 2f);
         Debug.DrawLine(rayStart2, rayEnd2, Color.red, 2f);
-        /*  Debug.Log(rayStart1 +"  " + rayEnd1);
-          Debug.Log(rayStart2 +"  " + rayEnd2);
-  */
-        foreach (GameObjectModel car in Cars)
+
+        for (int i = 0; i < Cars.Count; i++)
         {
+            GameObjectModel car = Cars[i];
             if (car == selectedCar) continue;
 
             Vector2 tempPos;
-            if (CollisionChecker.CheckRayCollision(car, rayStart1, rayEnd1, out tempPos))
+            if (CollisionChecker.CheckRayCollision(car, rayStart1, rayEnd1, out tempPos) ||
+                CollisionChecker.CheckRayCollision(car, rayStart2, rayEnd2, out tempPos))
             {
                 pos = tempPos;
-                Debug.Log($"Xe va chạm với xe {Cars.IndexOf(car)} tại {pos}");
+                indexCar = i; // Lưu lại xe bị va
+                Debug.Log($"Xe {index} sắp va vào xe {i} tại {pos}");
                 return false;
             }
-            if (CollisionChecker.CheckRayCollision(car, rayStart2, rayEnd2, out tempPos))
-            {
-                pos = tempPos;
-                Debug.Log($"Xe va chạm với xe {Cars.IndexOf(car)} tại {pos}");
-                return false;
-            }
-
         }
 
+        // Không có va chạm
         Cars.Remove(selectedCar);
         pos = selectedCar._position;
         return true;
     }
+
 }

@@ -60,8 +60,9 @@ public class Tank : MonoBehaviour
             return;
         }
         int index = transform.GetSiblingIndex();
+        int indexCar;
         Vector2 posCollision;
-        if (!MatrixGameController.Instance.HandleCarCollision(index, out posCollision))
+        if (!MatrixGameController.Instance.HandleCarCollision(index, out posCollision, out indexCar))
         {
             Transform target = PointShootingController.Instance.GetPoint();
             //PointShootingController.Instance.SetObj();
@@ -73,17 +74,22 @@ public class Tank : MonoBehaviour
         else
         {
             Vector3 originalPos = transform.position;
+            float distance = Vector2.Distance(transform.position, posCollision); 
+            Vector3 targetPos = transform.position + transform.right * distance * 0.5f;
 
-            transform.DOMove(posCollision, 0.2f)
+            transform.DOMove(targetPos, 0.2f)
                 .OnComplete(() =>
                 {
-                    transform.DOShakePosition(0.2f, strength: 0.3f, vibrato: 10, randomness: 90)
+                    Transform otherCar = transform.parent.GetChild(indexCar);
+                    otherCar.DOShakePosition(0.1f, strength: 0.1f, vibrato: 10, randomness: 90);
+
+                    transform.DOShakePosition(0.1f, strength: 0.1f, vibrato: 10, randomness: 90)
                         .OnComplete(() =>
                         {
                             transform.DOMove(originalPos, 0.2f);
                         });
-
                 });
+
         }
     }
     public void SetColor(int index)

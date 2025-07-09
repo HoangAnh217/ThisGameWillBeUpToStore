@@ -1,5 +1,6 @@
 ﻿using DG.Tweening;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PointShootingController : MonoBehaviour
@@ -44,6 +45,7 @@ public class PointShootingController : MonoBehaviour
             {
                 isUnlocked[i] = true;
                 Debug.Log($"Unlocked point {i}");
+                points[i].GetComponent<SpriteRenderer>().color = new Color32(0xE0, 0xA7, 0x1B, 0xFF);
                 return;
             }
         }
